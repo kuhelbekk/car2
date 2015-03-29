@@ -1,0 +1,33 @@
+
+yula.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame
+  rotate: false
+  xy: 2, 297
+  size: 568, 699
+  orig: 568, 699
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 572, 595
+  size: 566, 401
+  orig: 566, 401
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 2, 2
+  size: 568, 293
+  orig: 568, 293
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 572, 380
+  size: 104, 213
+  orig: 104, 213
+  offset: 0, 0
+  index: -1

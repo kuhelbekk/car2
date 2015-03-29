@@ -1,0 +1,75 @@
+
+poezd.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame
+  rotate: false
+  xy: 2, 333
+  size: 711, 681
+  orig: 711, 681
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 715, 615
+  size: 585, 399
+  orig: 585, 399
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 2, 2
+  size: 395, 329
+  orig: 395, 329
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 1302, 655
+  size: 348, 359
+  orig: 348, 359
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 715, 452
+  size: 376, 161
+  orig: 376, 161
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 399, 145
+  size: 267, 186
+  orig: 267, 186
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 1652, 758
+  size: 180, 256
+  orig: 180, 256
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 1834, 781
+  size: 172, 233
+  orig: 172, 233
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 1093, 449
+  size: 116, 164
+  orig: 116, 164
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 1211, 448
+  size: 116, 165
+  orig: 116, 165
+  offset: 0, 0
+  index: -1

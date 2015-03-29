@@ -1,0 +1,26 @@
+INDEX VERSION 1.126+D:\Леша\YandexDisc\java workspase\libgdx-test\.metadata\.plugins\org.eclipse.jdt.core
+957540479.index
+594969473.index
+163172794.index
+3065916431.index
+2731498486.index
+1115467115.index
+3133528496.index
+305854171.index
+1364334845.index
+3441250248.index
+4041092966.index
+1697886153.index
+822097417.index
+1960725456.index
+2224314621.index
+1498219845.index
+4155206848.index
+30765161.index
+4108727661.index
+2602551755.index
+2201787776.index
+3974580528.index
+1995173708.index
+1299022128.index
+2980305781.index

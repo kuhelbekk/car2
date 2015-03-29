@@ -1,0 +1,54 @@
+
+house.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame
+  rotate: false
+  xy: 2, 295
+  size: 631, 680
+  orig: 631, 680
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 2, 2
+  size: 631, 291
+  orig: 631, 291
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 635, 553
+  size: 459, 422
+  orig: 459, 422
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 1096, 647
+  size: 550, 328
+  orig: 550, 328
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 635, 322
+  size: 103, 229
+  orig: 103, 229
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 1648, 797
+  size: 102, 178
+  orig: 102, 178
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 635, 168
+  size: 100, 152
+  orig: 100, 152
+  offset: 0, 0
+  index: -1

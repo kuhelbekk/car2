@@ -1,0 +1,68 @@
+
+robot.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame
+  rotate: false
+  xy: 2, 316
+  size: 398, 702
+  orig: 398, 702
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 2, 64
+  size: 395, 250
+  orig: 395, 250
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 402, 785
+  size: 255, 233
+  orig: 255, 233
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 402, 638
+  size: 225, 145
+  orig: 225, 145
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 659, 850
+  size: 180, 168
+  orig: 180, 168
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 841, 911
+  size: 181, 107
+  orig: 181, 107
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 2, 2
+  size: 252, 60
+  orig: 252, 60
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 402, 542
+  size: 209, 94
+  orig: 209, 94
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 402, 436
+  size: 127, 104
+  orig: 127, 104
+  offset: 0, 0
+  index: -1

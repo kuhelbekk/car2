@@ -1,0 +1,75 @@
+
+cubes.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame
+  rotate: false
+  xy: 2, 419
+  size: 697, 602
+  orig: 697, 602
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 2, 114
+  size: 216, 303
+  orig: 216, 303
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 701, 735
+  size: 198, 286
+  orig: 198, 286
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 701, 407
+  size: 157, 326
+  orig: 157, 326
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 220, 159
+  size: 201, 258
+  orig: 201, 258
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 423, 122
+  size: 137, 295
+  orig: 137, 295
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 562, 128
+  size: 126, 289
+  orig: 126, 289
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 2, 2
+  size: 307, 110
+  orig: 307, 110
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 690, 269
+  size: 312, 136
+  orig: 312, 136
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 690, 143
+  size: 327, 124
+  orig: 327, 124
+  offset: 0, 0
+  index: -1
