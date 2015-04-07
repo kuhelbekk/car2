@@ -170,7 +170,7 @@ public class Menu2d implements Screen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (blockButton)
 					return;
-				newGame(new PuzzleScene(game,"car"), event);
+				newGame(new PuzzleScene(game,"xml/car.xml"), event);
 				
 			}
 		});		

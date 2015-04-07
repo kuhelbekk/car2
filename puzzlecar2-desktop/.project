@@ -19,13 +19,7 @@
 		<link>
 			<name>assets</name>
 			<type>2</type>
-			<location>D:/Aleksey/Dropbox/javaworkspase/puzzletoy/puzzletoy-android/assets</location>
+			<location>D:/Aleksey/Dropbox/javaworkspase/car2/puzzlecar2-android/assets</location>
 		</link>
 	</linkedResources>
-	<variableList>
-		<variable>
-			<name>copy_PARENT</name>
-			<value>$%7BPARENT-1-PROJECT_LOC%7D/puzzletoy</value>
-		</variable>
-	</variableList>
 </projectDescription>

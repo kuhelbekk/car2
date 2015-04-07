@@ -1,0 +1,40 @@
+
+bg_earth_road.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+bg
+  rotate: false
+  xy: 2, 1186
+  size: 1450, 800
+  orig: 1450, 800
+  offset: 0, 0
+  index: -1
+zayac1
+  rotate: false
+  xy: 2, 2
+  size: 1029, 1182
+  orig: 1029, 1182
+  offset: 0, 0
+  index: -1
+zayac
+  rotate: false
+  xy: 1454, 1198
+  size: 588, 788
+  orig: 588, 788
+  offset: 0, 0
+  index: -1
+kust
+  rotate: false
+  xy: 1033, 958
+  size: 676, 226
+  orig: 676, 226
+  offset: 0, 0
+  index: -1
+zayac0
+  rotate: false
+  xy: 1033, 789
+  size: 111, 167
+  orig: 111, 167
+  offset: 0, 0
+  index: -1

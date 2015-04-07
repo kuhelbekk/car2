@@ -19,7 +19,7 @@ import com.badlogic.gdx.utils.Array;
 public class PuzzleElement {
 
 	public Image image;
-	public Image shadow;
+	//public Image shadow;
 	public Rectangle tagert;
 	public Vector2 endPoint;
 	public int Zindex;
@@ -79,10 +79,7 @@ public class PuzzleElement {
 		
 		parent.stage.addActor(image);
 		setPosToStartPoint(2);
-		shadow = new Image(endRegion);
-		shadow.setPosition(endX, endY - endRegion.getRegionHeight());
-		shadow.setColor(0.09f, 0.09f, 0.12f, 0.80f);
-		parent.stage.addActor(shadow);
+		
 		image.addListener(new ClickListener() {
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
@@ -123,16 +120,14 @@ public class PuzzleElement {
 
 			public void touchDragged(InputEvent event, float x, float y,
 					int pointer) {
-				if (pointer != 0)
-					return;
-				if (isAttach)
-					return;
+				if (pointer != 0)	return;
+				if (isAttach)	return;
 				image.addAction(Actions.moveTo(
 						event.getStageX() - (image.getWidth() / 2),
 						event.getStageY() - (image.getHeight() / 2), 0.05f));
 				// image.setPosition(event.getStageX()-(image.getWidth()/2),
 				// event.getStageY()-(image.getHeight()/2)) ;
-				if (hit(x, y) != null) {
+				if (hit() != null) {
 					image.setColor(1.1f, 1.1f, 1.1f, 1);
 					setAction(3);
 				} else {
@@ -141,21 +136,22 @@ public class PuzzleElement {
 				}
 			}
 
-			public void touchUp(InputEvent event, float x, float y,
-					int pointer, int button) {
-				if ((button != 0) || (pointer != 0))
-					return;
-				PuzzleElement pe = hit(x, y);
-				if (pe != null) {
-					
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				if ((button != 0) || (pointer != 0))	return;
+				Gdx.app.log("1111", "im x=" + image.getX());
+				float px = image.getX();
+				float py = image.getY();
+				PuzzleElement pe = hit();
+				if (pe != null) {					
 					if (pe.image != image) {
 						int i = index;
 						index = pe.index;
 						pe.index = i;
 						image.setColor(1, 1, 1, 1);
 						setPosToStartPoint(2);
-					}				
-					pe.fixing();
+					}	
+					
+					pe.fixing(true, px, py);
 					parent.stars.play(event.getStageX(), event.getStageY());
 				} else {
 					setPosToStartPoint(1);
@@ -176,7 +172,7 @@ public class PuzzleElement {
 		sSuccessName = name;
 	}
 
-	private PuzzleElement hit(float x, float y) {	
+	private PuzzleElement hit() {		
 		if(image != null) {
 			if ((Math.abs(endPoint.x - image.getX()) < parent.game.accuracy)
 					& (Math.abs(endPoint.y - image.getY()) < parent.game.accuracy)) {
@@ -188,30 +184,36 @@ public class PuzzleElement {
 		return null;
 	}
 
-	public void fixing(boolean PlaySound) {
+	public void fixing(boolean PlaySound, float  px, float  py) {
+		
+		
 		image.remove();
 		image = null;
-		//image = new Image(endRegion);
-		//image.setZIndex(Zindex);
-		//image.setPosition(endPoint.x, endPoint.y);
-		//image.setColor(1, 1, 1, 1);
-	//	image.setPosition(endPoint.x + image.getWidth() / 2, endPoint.y + image.getHeight() / 2);
-	//	image.setScale(0.01f, 0.01f);
-	//	image.addAction(Actions.moveTo(endPoint.x, endPoint.y, 0.3f));
-		//image.addAction(Actions.scaleTo(1, 1, 0.3f));
-		shadow.addAction(Actions.color(new Color(1, 1, 1,1), 0.3f));
-		parent.sameElements.RemoveElement(this);
+		image = new Image(endRegion);		
+		image.setZIndex(Zindex);		
+		image.setColor(1, 1, 1, 1);	
+		Gdx.app.log("xy", "x=" + px +"  py="+py);
+		image.setPosition(px, py);		
+		image.addAction(Actions.sequence(
+							Actions.parallel(				
+								Actions.moveTo(endPoint.x - image.getWidth()/8, endPoint.y - image.getHeight()/8, 0.1f),
+							    Actions.scaleTo(1.25f, 1.25f, 0.1f)),
+							Actions.parallel(		
+								Actions.moveTo(endPoint.x, endPoint.y, 0.05f),
+		 					    Actions.scaleTo(1, 1, 0.05f))));
+		
+		parent.stage.addActor(image);
+
 		isAttach = true;
-		//stars.play();
-		//parent.btnBack.setZIndex(151);		
+		parent.btnBack.setZIndex(151);
 		if ((PlaySound)&(sSuccess != null)) {
 			sSuccess.play(1f);
 		}
+	  //stars.play();
+	  //parent.sameElements.RemoveElement(this);
 		parent.elementMounted(this);
-	}
-	
-	public void fixing() {
-		fixing(true);
+
+		
 	}
 
 	public void setPosToStartPoint(int type) {
@@ -228,25 +230,27 @@ public class PuzzleElement {
 		//image.setColor(0.9f, 0.9f, 0.9f, 1f);
 		image.setColor(0.9f, 0.9f, 0.9f, 1f);
 		image.setOrigin(image.getWidth() / 2, image.getHeight() / 2);
+		
+		int dx =(int) (parent.screenWidth - parent.game.maxWidht)/ 2;		
+		int dy =(int) (parent.screenHeight - parent.game.maxHeight)/2;	
+		
 		switch (type) {
 		case 0: // / сдвиг после попадания
-			image.addAction(Actions.moveTo(140-image.getWidth()/2,parent.screenHeight - (index * 155) -image.getHeight()/2+70 , 0.2f));
+			image.addAction(Actions.moveTo(330+dx-image.getWidth()/2,parent.screenHeight - (index * 170) -image.getHeight()/2-dy+40 , 0.2f));
 			break;
 		case 1:// // возврат на место детали
 			float scale = startRegion.getRegionHeight() / image.getHeight();
 			image.setPosition(image.getX() + (startRegion.getRegionWidth() - image.getWidth())/ 2,
 						      image.getY() + (startRegion.getRegionHeight() - image.getHeight()) / 2);
 			image.setScale(scale);
-			image.addAction(Actions.parallel(Actions.moveTo(140-image.getWidth()/2, parent.screenHeight - (index* 155)-image.getHeight()/2+70 , 0.2f),	Actions.scaleTo(1, 1, 0.2f)));
+			image.addAction(Actions.parallel(Actions.moveTo(330+dx-image.getWidth()/2, parent.screenHeight - (index* 170)-image.getHeight()/2-dy+40 , 0.2f),	Actions.scaleTo(1, 1, 0.2f)));
 
 			break;
 		case 2:// / поставить на место без анимации
-			image.setPosition(140-image.getWidth()/2,	parent.screenHeight - (index* 155)-image.getHeight()/2+70 );
+			image.setPosition(330+dx-image.getWidth()/2,	parent.screenHeight -image.getHeight()/2- (index* 170)-dy+40 );
 			break;
 		}
-
-		image.setVisible(index < 6);
-
+		image.setVisible(index < 5);
 	}
 
 
@@ -297,7 +301,7 @@ public class PuzzleElement {
 
 	public void refreshZindex(int count){
 		if (image!=null) image.setZIndex(Zindex);
-		shadow.setZIndex(Zindex-count-1);
+		//shadow.setZIndex(Zindex-count-1);
 		
 	}
 }

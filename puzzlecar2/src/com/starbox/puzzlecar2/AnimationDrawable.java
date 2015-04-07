@@ -3,6 +3,7 @@ package com.starbox.puzzlecar2;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
+import com.badlogic.gdx.utils.TimeUtils;
 
 
 public class AnimationDrawable extends BaseDrawable {
@@ -12,10 +13,11 @@ public class AnimationDrawable extends BaseDrawable {
 	public int animPos = 0;
 	private boolean endAnim = false;
 	public float rotate=0;
-
+	public boolean loop = false;
 	public float scaleX=1;
 	public float scaleY=1;
-
+	private long waittime=0;
+	public int waiting =0;
 	
 	
 	public boolean isEndAnim() {
@@ -29,8 +31,7 @@ public class AnimationDrawable extends BaseDrawable {
 	}
 
 	public void act(float delta) {
-		if (playing) {
-			// Gdx.app.log("Anim","playing anim");
+		if (playing) {			
 			stateTime += delta;
 		}
 	}
@@ -42,9 +43,21 @@ public class AnimationDrawable extends BaseDrawable {
 	@Override
 	public void draw(Batch batch, float x, float y, float width,float height) {
 		animPos = anim.getKeyFrameIndex(stateTime);
-		if (playing & anim.isAnimationFinished(stateTime)) {			
-			endAnim = true;
-			playing = false;
+		if (playing & anim.isAnimationFinished(stateTime)) {	
+			if (loop){
+				if (waittime>0){
+					if (waittime<TimeUtils.millis())  {
+						waittime=0;
+						stateTime=0;
+					}
+				}else{
+					waittime=TimeUtils.millis()+waiting;
+				}				
+			}else{
+				endAnim = true;
+				playing = false;	
+			}
+			
 		}
 		//batch.draw(anim.getKeyFrame(stateTime), x, y, width, height);
 		batch.draw(anim.getKeyFrame(stateTime), x, y,  width/2,height/2, width, height, scaleX, scaleY, rotate);
@@ -57,5 +70,16 @@ public class AnimationDrawable extends BaseDrawable {
 			playing = true;
 			stateTime = 0;
 		}
+	}
+	
+	public void resetAndPlay() {			
+			endAnim = false;
+			playing = true;
+			stateTime = 0;		
+	}
+	
+	public void stop() {		
+		endAnim = true;
+		playing = false;
 	}
 }

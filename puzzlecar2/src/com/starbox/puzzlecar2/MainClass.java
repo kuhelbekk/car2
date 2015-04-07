@@ -15,6 +15,8 @@ public class MainClass extends Game {
 	private static boolean premium = false;
 	private static boolean StartErrorinQueryInventory = false;
 	public int accuracy = 50;
+	final int maxHeight =800;
+	final int maxWidht =1450;
 
 	public PayCar2 payFrame;
 
@@ -43,25 +45,29 @@ public class MainClass extends Game {
 
 	}
 
+	
+	public TextureRegion[] GetAnimFrames(TextureRegion tr, int width, int height) {	
+		return GetAnimFrames( tr,  width,  height, 0);		
+	}
 	// /// common functions
-	public TextureRegion[] GetAnimFrames(String RegionName, int width, int height) {
+	public TextureRegion[] GetAnimFrames(TextureRegion tr, int width, int height, int count) {		
 		
-		TextureRegion tr = commonAtlas.findRegion(RegionName);
 		 int wdth = width;
 		 int hght = height;
-		 Gdx.app.log("Game", "tr.getRegionWidth()= "+tr.getRegionWidth());
-		 Gdx.app.log("Game", "wdth = "+wdth);
-
+		 
 		if (tr.getRegionWidth() < wdth) wdth = tr.getRegionWidth() ;
 		if (tr.getRegionHeight() < hght) hght = tr.getRegionHeight() ;
 		int w = tr.getRegionWidth() / wdth;
 		int h = tr.getRegionHeight() / hght;
-		TextureRegion[] Frames = new TextureRegion[w * h];
+		
 		int k = 0;
+		if (count==0) count=w*h;
+		TextureRegion[] Frames = new TextureRegion[count];
 		for (int j = 0; j < (h); j++)
 			for (int i = 0; i < (w); i++) {
-				Frames[k] = new TextureRegion(tr.getTexture(), tr.getRegionX()	+ i * wdth, tr.getRegionY() + j * hght, wdth,		hght);
-				++k;
+				if (k==count) break;
+				Frames[k] = new TextureRegion(tr.getTexture(), tr.getRegionX()	+ i * wdth, tr.getRegionY() + j * hght, wdth,hght);
+				++k;		
 			}
 		return Frames;
 	}
