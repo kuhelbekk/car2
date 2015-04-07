@@ -170,42 +170,42 @@ public class Menu2d implements Screen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (blockButton)
 					return;
-				newGame(new PuzzleScene(game,"xml/car.xml"), event);
+				newGame(new PuzzleScene(game,"xml/jeep.xml"), event);
 				
 			}
 		});		
 		table11.add(btn).expand();
 
-	/*	btn = addBtnOnMenu(2);// //// 1:2
+		btn = addBtnOnMenu(1);// //// 1:2
 		btn.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				if (blockButton)
 					return;
-				newGame(new PuzzleRocket(game), event);
+				newGame(new PuzzleScene(game,"xml/jeep1.xml"), event);
 				
 			}
 		});
 		table11.add(btn).expand();
 
-		btn = addBtnOnMenu(3);// //// 1:3
+		btn = addBtnOnMenu(1);// //// 1:3
 		btn.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				if (blockButton)
 					return;
-				newGame(new PuzzlePoezd(game), event);				
+				newGame(new PuzzleScene(game,"xml/jeep2.xml"), event);		
 			}
 		});
 		table11.add(btn).expand();
 
-		btn = addBtnOnMenu(4);// /////////// 1:4
+		btn = addBtnOnMenu(1);// /////////// 1:4
 		btn.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				if (blockButton)
 					return;
-				newGame(new PuzzleHouse(game), event);
+				newGame(new PuzzleScene(game,"xml/jeep3.xml"), event);
 			}
 		});
-		table11.add(btn).expand();
+		table11.add(btn).expand();/*
 		// /////////////////////// вторая строка
 		table11.row();
 		btn = addBtnOnMenu(5);// ////////////2:1
