@@ -135,8 +135,13 @@ public class PuzzleScene implements Screen {
 				
 		
 		//740*720
-		pfdx=225+210;
-		pfdy=53; 
+		
+		
+		pfdx =(int) (screenWidth-game.maxWidht)/ 2;		
+		pfdy =(int) (screenHeight -game.maxHeight)/2;	
+		pfdx+=225+210;
+		
+		
 		sameElements = new SameElements();
 		
 		
@@ -166,14 +171,12 @@ public class PuzzleScene implements Screen {
 		    
 		    
 		   	
-		   	
+		   	pfdy+=root.getInt("dy",0);
 		   	//// рамка
 			puzzleFrame = new Image(textureAtlas.findRegion("frame"));
-			stage.addActor(puzzleFrame);
-			
-		    XmlReader.Element framexml = root.getChildByName("frame");		    
+			stage.addActor(puzzleFrame);		    		    
 		   	
-		    String startSoundName = framexml.get("s");		    
+		    String startSoundName = root.get("s");		    
 		    if (game.settings.isSound() & game.settings.isVoice() & (!startSoundName.equals(""))) {			    	
 				sStartSound = Gdx.audio.newSound(Gdx.files.internal("mfx/"+startSoundName+game.getLangStr()+".mp3"));
 			}	    

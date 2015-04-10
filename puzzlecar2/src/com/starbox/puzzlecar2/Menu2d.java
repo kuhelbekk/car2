@@ -170,7 +170,7 @@ public class Menu2d implements Screen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (blockButton)
 					return;
-				newGame(new PuzzleScene(game,"xml/jeep.xml"), event);
+				newGame(new PuzzleScene(game,"xml/car_jeep.xml"), event);
 				
 			}
 		});		
@@ -181,7 +181,7 @@ public class Menu2d implements Screen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (blockButton)
 					return;
-				newGame(new PuzzleScene(game,"xml/jeep1.xml"), event);
+				newGame(new PuzzleScene(game,"xml/car_bus.xml"), event);
 				
 			}
 		});
@@ -192,17 +192,7 @@ public class Menu2d implements Screen {
 			public void clicked(InputEvent event, float x, float y) {
 				if (blockButton)
 					return;
-				newGame(new PuzzleScene(game,"xml/jeep2.xml"), event);		
-			}
-		});
-		table11.add(btn).expand();
-
-		btn = addBtnOnMenu(1);// /////////// 1:4
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				newGame(new PuzzleScene(game,"xml/jeep3.xml"), event);
+				newGame(new PuzzleScene(game,"xml/car_hummer.xml"), event);		
 			}
 		});
 		table11.add(btn).expand();/*
