@@ -1,5 +1,6 @@
 package com.starbox.puzzlecar2;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
@@ -24,6 +25,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.XmlReader;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -159,211 +161,46 @@ public class Menu2d implements Screen {
 		});
 		
 		
-
-		// // menu level 11
-		table11 = new Table();
 		
-		table11.setBounds(10, 5, screenWidth - 20, screenHeight - 20);
-		PremiumButtons = new ArrayList<Button>();
-		btn = addBtnOnMenu(1); // ///1:1
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				newGame(new PuzzleScene(game,"xml/car_jeep.xml"), event);
-				
-			}
-		});		
-		table11.add(btn).expand();
-
-		btn = addBtnOnMenu(1);// //// 1:2
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				newGame(new PuzzleScene(game,"xml/car_bus.xml"), event);
-				
-			}
-		});
-		table11.add(btn).expand();
-
-		btn = addBtnOnMenu(1);// //// 1:3
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				newGame(new PuzzleScene(game,"xml/car_hummer.xml"), event);		
-			}
-		});
-		table11.add(btn).expand();/*
-		// /////////////////////// вторая строка
-		table11.row();
-		btn = addBtnOnMenu(5);// ////////////2:1
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())			
-					newGame(new PuzzleBalloons(game), event);
-					else showPayFrame();
-				
-
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-		
-		btn = addBtnOnMenu(6);// ////////////2:2
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleHorse(game), event);
-					else showPayFrame();
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-
-		btn = addBtnOnMenu(7);// ////////////2:3
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzlePyramid(game), event);
-					else showPayFrame();
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-
-		btn = addBtnOnMenu(8);// ////////////2:4
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleBall(game), event);
-					else showPayFrame();
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-		// /////////////////////// третья строка
-		table11.row();
-
-		btn = addBtnOnMenu(9);// ////////////3:1
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleCar(game), event);
-					else showPayFrame();
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-
-		btn = addBtnOnMenu(10);// ////////////3:2
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleDuck(game), event);
-					else showPayFrame();
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-		
-		btn = addBtnOnMenu(11);// ////////////3:3
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleHelicopt(game), event);
-					else showPayFrame();
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-		
-		btn = addBtnOnMenu(12);// ////////////3:4
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleShip(game), event);
-					else showPayFrame();
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-		table11.row();
-		
-		btn = addBtnOnMenu(13);// ////////////4:1
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleFish(game), event);
-					else showPayFrame();
-
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-		
-		btn = addBtnOnMenu(14);// ////////////4:2
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleSamolet(game), event);
-					else showPayFrame();
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-		
-		btn = addBtnOnMenu(15);// ////////////4:3
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleRobot(game), event);
-					else showPayFrame();					
-
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();
-
-		btn = addBtnOnMenu(16);// ////////////4:4
-		btn.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				if (blockButton)
-					return;
-				if (game.isPremium())
-					newGame(new PuzzleCube(game), event);
-					else showPayFrame();
-
-			}
-		});
-		PremiumButtons.add(btn);
-		table11.add(btn).expand();*/
-		
+		try {
+			XmlReader xmlReader = new XmlReader();			
+		    XmlReader.Element root = xmlReader.parse(Gdx.files.internal("xml/menu.xml")); 
+		    int cols = root.getInt("cols",4);
+		    int rows = root.getInt("rows",4);	    
+		    XmlReader.Element btnsE = root.getChildByName("btns");	  
+		    XmlReader.Element btnE; 
+		    if (btnsE != null){	    	
+		    	// // menu level 11
+		    	//Gdx.app.log("menu xml", "img_index = " + realWidth + " realHeight = "				+ realHeight);
+				table11 = new Table();			
+				table11.setBounds(10, 5, screenWidth - 20, screenHeight - 20);
+				PremiumButtons = new ArrayList<Button>();
+				for (int i = 0; i< rows; i++){
+					for (int j = 0; j< cols ; j++){
+						if (((i*cols)+j)<btnsE.getChildCount()){
+							Gdx.app.log("menu xml", "get btn - " + (i*cols)+j );
+							btnE = btnsE.getChild((i*cols)+j);
+							btn = addLevelBtn(btnE.getInt("img_index"),btnE.get("xml_name"));							
+							table11.add(btn).expand();
+							}
+													
+						}	
+					table11.row();
+					}					
+				}
+			
+		}catch (IOException e) {			
+			e.printStackTrace();
+		}
 		
 		table11.setOrigin(table11.getWidth()/2, table11.getHeight()/2);
+		table11.setVisible(false);
+		stage.addActor(table11);
+		
+			
+			
+
+	
 		
 		tableLangs = new Table();
 		tableLangs.setBounds(screenWidth/2+170, 64 , 87, 175);			//////////////////////////////////////////////////
@@ -372,11 +209,11 @@ public class Menu2d implements Screen {
 		tableSettings.setBounds(screenWidth/2-150, 5, 300, 54);					/////////////////////////////////////////////
 		tableSettings.addAction(Actions.sequence(Actions.alpha(0f, 0),
 				Actions.alpha(1f, 1.5f)));
-		table11.setVisible(false);
+		
 		
 		stage.addActor(tableLangs);
 		stage.addActor(tableSettings);
-		stage.addActor(table11);
+		
 		
 		
 		
@@ -636,9 +473,10 @@ public class Menu2d implements Screen {
 					clickLang();					
 				}
 			}			
-		});
+		});		
 		stage.addActor(arrow);		
-		if (game.getLangStr().equals("_de"))sticker = new Image(textureAtlas.findRegion("sticker"+"_en"));	/// костыль
+		
+		if (game.getLangStr().equals("_de"))sticker = new Image(textureAtlas.findRegion("sticker_en"));	/// костыль
 			else sticker = new Image(textureAtlas.findRegion("sticker"+game.getLangStr()));	
 		sticker.setPosition(screenWidth/2+50, screenHeight-420);
 		stage.addActor(sticker);	
@@ -754,16 +592,17 @@ public class Menu2d implements Screen {
 
 	
 
-	private Button addBtnOnMenu(int index) {
+	private Button addBtnOnMenu(int index,String xmlname) {
 		return addBtnOnMenu(""+index+"_up", ""+index+"_dn", ""+index+"_na" , "", 0, 0, true);
 	}
 	
-	private Button addBtnOnMenu(String sUp, String sDn) {
-		return addBtnOnMenu(sUp, sDn, "" , "", 0, 0, true);
+	private Button addBtnOnMenu(String sUp, String sDn ) {
+		return addBtnOnMenu(sUp, sDn, "" , "", 0, 0, true );
 	}
-	private Button addBtnOnMenu(String sUp, String sDn, String sDs,  String sCheck) {
+	private Button addBtnOnMenu(String sUp, String sDn, String sDs,  String sCheck ) {
 		return addBtnOnMenu(sUp, sDn, sDs, sCheck, 0, 0, true);
 	}
+	
 	private Button addBtnOnMenu(String sUp, String sDn, String sDs,  String sCheck, float px, float py,
 			boolean visible) {
 		ButtonStyle bs = new ButtonStyle();
@@ -778,10 +617,28 @@ public class Menu2d implements Screen {
 		btn.setPosition(px, py);
 		btnList.add(btn);
 		stage.addActor(btn);
+		
+		
 		return btn;
 	}
 
-	
+	private Button addLevelBtn(int index, String xmlname) {
+		
+		Gdx.app.log("addLevelBtn", "index - " +index+"  xmlname - "+ xmlname);
+		ButtonStyle bs = new ButtonStyle();
+		bs.up = skin.getDrawable(""+index+"_up");
+		bs.down = skin.getDrawable( ""+index+"_dn");
+		bs.disabled = skin.getDrawable(""+index+"_na");
+		
+		MenuLevelButton mBtn = new MenuLevelButton(bs,xmlname, this);
+		
+		Button btn = mBtn.getButton();	
+		btn.setPosition(0, 0);
+		btn.setVisible(true);
+		btnList.add(btn);
+		stage.addActor(btn);		
+		return btn;
+	}
 	
 	
 	
@@ -888,7 +745,7 @@ public class Menu2d implements Screen {
 		}
 	}
 
-	private void newGame(Screen screen, InputEvent event) {
+	public void newGame(Screen screen, InputEvent event) {
 		if (event.getButton() > 0)
 			return;
 		if (game.settings.isSound())

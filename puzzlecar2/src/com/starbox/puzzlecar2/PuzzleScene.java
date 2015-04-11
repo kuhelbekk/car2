@@ -130,23 +130,15 @@ public class PuzzleScene implements Screen {
 		
 		
 		
-		
-		
-				
-		
 		//740*720
-		
 		
 		pfdx =(int) (screenWidth-game.maxWidht)/ 2;		
 		pfdy =(int) (screenHeight -game.maxHeight)/2;	
 		pfdx+=225+210;
-		
-		
+				
 		sameElements = new SameElements();
 		
-		
-		
-		/// финашный фон
+		//// финашный фон
 		finishRays = new Image(game.commonAtlas.findRegion("endGameRays"));
 		finishRays.setPosition((screenWidth - finishRays.getWidth()) / 2,	(screenHeight - finishRays.getHeight()) / 2);
 		finishRays.setVisible(false);		
@@ -232,11 +224,8 @@ public class PuzzleScene implements Screen {
 		    		Gdx.app.log("sameElements", "SE="+se+ "  NE="+ nameReg);
 		    	}
 		    	pe.image.setName("I"+nameReg);	    	
-		    } 		    
-		    
-		    
-		    
-		    
+		    } 				    
+		    		    
 		    puzzleFrame.setZIndex(ecount+fz+1);
 		    bg.drawFront(ecount+fz+2);
 		    refreshZindElements();
@@ -246,12 +235,6 @@ public class PuzzleScene implements Screen {
 			e.printStackTrace();
 		}
 
-		
-			
-				
-				
-				
-				
 		if (game.settings.isMusic() & game.settings.isSound()) {
 			long rnd = Math.round((Math.random() * 2));
 			mFon = Gdx.audio.newMusic(Gdx.files.internal("mfx/s" + rnd + ".mp3"));			
