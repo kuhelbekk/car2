@@ -31,14 +31,60 @@ public class Main implements PayCar2 {
 	public void createGUI(){
 		frame = new JFrame("Test");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  
-		JPanel panel= new JPanel();	       
+		JPanel panel= new JPanel();	
+		
+		JButton startButton = new JButton("Small");
+        panel.add(startButton, BorderLayout.WEST);
+        startButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {     
+        		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();        		
+        		cfg.title = "Game";        		
+        		cfg.width = 1024;
+        		cfg.height =720;
+        		MainClass mc=new MainClass(m); 
+        		new LwjglApplication(mc, cfg);         		
+        		mc.setPremium(true);
+            }
+        });
+        startButton = new JButton("medium");
+        panel.add(startButton, BorderLayout.WEST);
+        startButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {     
+        		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();        		
+        		cfg.title = "Game";        		
+        		cfg.width = 1280;
+        		cfg.height =800;
+        		MainClass mc=new MainClass(m); 
+        		new LwjglApplication(mc, cfg);         		
+        		mc.setPremium(true);
+            }
+        });
+        startButton = new JButton("Big");
+        panel.add(startButton, BorderLayout.WEST);
+        startButton.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {     
+        		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();        		
+        		cfg.title = "Game";        		
+        		cfg.width = 1450;
+        		cfg.height =800;
+        		MainClass mc=new MainClass(m); 
+        		new LwjglApplication(mc, cfg);         		
+        		mc.setPremium(true);
+            }
+        });
         final JTextField edit1 = new JTextField("1280",4);
         final JTextField edit2 = new JTextField("800",4);
         final JCheckBox cb = new JCheckBox("premium",true);
         panel.add(edit1, BorderLayout.CENTER);
         panel.add(edit2, BorderLayout.CENTER);
         panel.add(cb, BorderLayout.CENTER);
-        JButton startButton = new JButton("Start");
+        startButton = new JButton("Start");
         panel.add(startButton, BorderLayout.SOUTH);
         startButton.addActionListener(new ActionListener()
         {
@@ -49,9 +95,7 @@ public class Main implements PayCar2 {
         		cfg.width = Integer.valueOf(edit1.getText());
         		cfg.height =Integer.valueOf(edit2.getText());
         		MainClass mc=new MainClass(m); 
-        		new LwjglApplication(mc, cfg);  		
-        		
-        		
+        		new LwjglApplication(mc, cfg);         		
         		mc.setPremium(cb.isSelected());
             }
         });

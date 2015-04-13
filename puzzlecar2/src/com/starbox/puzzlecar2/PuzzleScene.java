@@ -147,7 +147,8 @@ public class PuzzleScene implements Screen {
 		
 		
 		try {		    
-			XmlReader xmlReader = new XmlReader();			
+			XmlReader xmlReader = new XmlReader();	
+			Gdx.app.log("xmlFileName","xmlFileName="+ xmlFileName);
 		    XmlReader.Element root = xmlReader.parse(Gdx.files.internal(xmlFileName)); 
 		    XmlReader.Element atlasnameE = root.getChildByName("atlas");
 		    

@@ -178,7 +178,7 @@ public class Menu2d implements Screen {
 				for (int i = 0; i< rows; i++){
 					for (int j = 0; j< cols ; j++){
 						if (((i*cols)+j)<btnsE.getChildCount()){
-							Gdx.app.log("menu xml", "get btn - " + (i*cols)+j );
+							Gdx.app.log("menu xml", "get btn - " + ((i*cols)+j) );
 							btnE = btnsE.getChild((i*cols)+j);
 							btn = addLevelBtn(btnE.getInt("img_index"),btnE.get("xml_name"));							
 							table11.add(btn).expand();

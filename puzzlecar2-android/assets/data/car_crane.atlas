@@ -1,0 +1,96 @@
+
+car_crane.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame
+  rotate: false
+  xy: 2, 1310
+  size: 918, 736
+  orig: 918, 736
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 2, 889
+  size: 705, 419
+  orig: 705, 419
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 2, 499
+  size: 352, 388
+  orig: 352, 388
+  offset: 0, 0
+  index: -1
+4_full
+  rotate: false
+  xy: 2, 109
+  size: 352, 388
+  orig: 352, 388
+  offset: 0, 0
+  index: -1
+frame2
+  rotate: false
+  xy: 356, 499
+  size: 352, 388
+  orig: 352, 388
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 709, 1146
+  size: 180, 162
+  orig: 180, 162
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 356, 337
+  size: 180, 160
+  orig: 180, 160
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 709, 984
+  size: 180, 160
+  orig: 180, 160
+  offset: 0, 0
+  index: -1
+3_full
+  rotate: false
+  xy: 356, 175
+  size: 179, 160
+  orig: 179, 160
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 356, 2
+  size: 166, 171
+  orig: 166, 171
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 538, 349
+  size: 160, 148
+  orig: 160, 148
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 891, 1104
+  size: 114, 204
+  orig: 114, 204
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 710, 867
+  size: 170, 115
+  orig: 170, 115
+  offset: 0, 0
+  index: -1
