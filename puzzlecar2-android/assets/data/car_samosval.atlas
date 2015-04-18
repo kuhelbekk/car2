@@ -1,0 +1,82 @@
+
+car_samosval.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame
+  rotate: false
+  xy: 2, 1362
+  size: 778, 565
+  orig: 778, 565
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 2, 984
+  size: 638, 376
+  orig: 638, 376
+  offset: 0, 0
+  index: -1
+6_full
+  rotate: false
+  xy: 2, 606
+  size: 638, 376
+  orig: 638, 376
+  offset: 0, 0
+  index: -1
+frame2
+  rotate: false
+  xy: 2, 228
+  size: 638, 376
+  orig: 638, 376
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 782, 1703
+  size: 224, 224
+  orig: 224, 224
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 2, 2
+  size: 224, 224
+  orig: 224, 224
+  offset: 0, 0
+  index: -1
+2_full
+  rotate: false
+  xy: 782, 1477
+  size: 224, 224
+  orig: 224, 224
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 228, 26
+  size: 220, 200
+  orig: 220, 200
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 450, 73
+  size: 205, 153
+  orig: 205, 153
+  offset: 0, 0
+  index: -1
+3_full
+  rotate: false
+  xy: 782, 1322
+  size: 205, 153
+  orig: 205, 153
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 642, 1124
+  size: 59, 236
+  orig: 59, 236
+  offset: 0, 0
+  index: -1

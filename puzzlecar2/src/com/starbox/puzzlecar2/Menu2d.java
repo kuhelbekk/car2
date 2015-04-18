@@ -180,7 +180,8 @@ public class Menu2d implements Screen {
 						if (((i*cols)+j)<btnsE.getChildCount()){
 							Gdx.app.log("menu xml", "get btn - " + ((i*cols)+j) );
 							btnE = btnsE.getChild((i*cols)+j);
-							btn = addLevelBtn(btnE.getInt("img_index"),btnE.get("xml_name"));							
+							Gdx.app.log("start", "screenWidth = " + screenWidth				+ " screenHeight = " + screenHeight);
+							btn = addLevelBtn(btnE.get("img_index"),btnE.get("xml_name"));							
 							table11.add(btn).expand();
 							}
 													
@@ -622,13 +623,13 @@ public class Menu2d implements Screen {
 		return btn;
 	}
 
-	private Button addLevelBtn(int index, String xmlname) {
+	private Button addLevelBtn(String index, String xmlname) {
 		
 		Gdx.app.log("addLevelBtn", "index - " +index+"  xmlname - "+ xmlname);
 		ButtonStyle bs = new ButtonStyle();
-		bs.up = skin.getDrawable(""+index+"_up");
-		bs.down = skin.getDrawable( ""+index+"_dn");
-		bs.disabled = skin.getDrawable(""+index+"_na");
+		bs.up = skin.getDrawable(index+"_up");
+		bs.down = skin.getDrawable(index+"_dn");
+		bs.disabled = skin.getDrawable(index+"_na");
 		
 		MenuLevelButton mBtn = new MenuLevelButton(bs,xmlname, this);
 		

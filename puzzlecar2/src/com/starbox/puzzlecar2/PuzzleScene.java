@@ -46,6 +46,7 @@ public class PuzzleScene implements Screen {
 	protected MainClass game;
 	protected PuzzleElement selectedElement;
 	protected ArrayList<PuzzleElement> elementList;	
+	protected ArrayList<Image> tempFrameList;
     protected SameElements sameElements;
 	protected Button btnDn, btnBack;
 	protected Stage stage;
@@ -150,40 +151,63 @@ public class PuzzleScene implements Screen {
 			XmlReader xmlReader = new XmlReader();	
 			Gdx.app.log("xmlFileName","xmlFileName="+ xmlFileName);
 		    XmlReader.Element root = xmlReader.parse(Gdx.files.internal(xmlFileName)); 
-		    XmlReader.Element atlasnameE = root.getChildByName("atlas");
+		    XmlReader.Element atlasnameE = root.getChildByName("atlas");	
+			textureAtlas = new TextureAtlas(atlasnameE.get("name"));
+		    		   		    
+		    XmlReader.Element bgnamexmlE = root.getChildByName("bg");
+		   	bg = new Background( stage, game, bgnamexmlE.get("name"), screenWidth, screenHeight );
 		    
-		    if (atlasnameE != null){
-		    	String atlasname = atlasnameE.get("name");
-			   	textureAtlas = new TextureAtlas(atlasname);
-		    }
-		   	
-		    
-		    XmlReader.Element bgnamexmlE = root.getChildByName("bg");		    
-		   	String bgnamexml =bgnamexmlE.get("name");
-		   	bg = new Background( stage, game, bgnamexml, screenWidth, screenHeight );
-		    
+		   	String startSoundName = root.get("s");		    
+		    if (game.settings.isSound() & game.settings.isVoice() & (!startSoundName.equals(""))) {			    	
+				sStartSound = Gdx.audio.newSound(Gdx.files.internal("mfx/"+startSoundName+game.getLangStr()+".mp3"));
+			}
 		    
 		   	
 		   	pfdy+=root.getInt("dy",0);
 		   	//// рамка
-			puzzleFrame = new Image(textureAtlas.findRegion("frame"));
-			stage.addActor(puzzleFrame);		    		    
+		   	XmlReader.Element element ;
 		   	
-		    String startSoundName = root.get("s");		    
-		    if (game.settings.isSound() & game.settings.isVoice() & (!startSoundName.equals(""))) {			    	
-				sStartSound = Gdx.audio.newSound(Gdx.files.internal("mfx/"+startSoundName+game.getLangStr()+".mp3"));
-			}	    
-		    
+		   	
+			puzzleFrame = new Image(textureAtlas.findRegion("frame"));
+			stage.addActor(puzzleFrame);  
 		    puzzleFrame.setPosition(pfdx,screenHeight- (puzzleFrame.getHeight()+pfdy));
 		    puzzleFrame.setName("Frame");	
 		    int fz= puzzleFrame.getZIndex();
+		  
+		    
+		 // временная рамка изчезает при анимации
+		 	tempFrameList = new ArrayList<Image>();
+		 	XmlReader.Element frameE = root.getChildByName("frame");
+		 	if (frameE!=null){
+		 		for (int i=0; i<(frameE.getChildCount());i++ ){
+			    				 		
+			    	element = frameE.getChild(i);
+			    	String nameE=element.get("id");
+			    	int x =element.getInt("x");
+			    	int y =element.getInt("y");		   		    	
+			    	/// вставка элемента
+			    	Image fr = new Image(textureAtlas.findRegion(nameE));
+			    	tempFrameList.add(fr);	    	
+			    	stage.addActor(fr);
+			    	fr.setPosition(pfdx+x,screenHeight- (fr.getHeight()+pfdy+y));
+			    	fz++;
+			    	fr.setZIndex(fz);
+			    	fr.setName(nameE);	    	
+			    } 	
+		 	}
+		 	
+		 	
+		 			
+		 			
+		    
+		    
 		    
 		    XmlReader.Element elements = root.getChildByName("assets");
 		    int ecount = elements.getChildCount();
 		    ///// элемент поверх всех
 		    
-		    int bgElement=0;
-		    XmlReader.Element element ;/*= root.getChildByName("bg");
+		  /*  int bgElement=0;
+		    = root.getChildByName("bg");
 		    PuzzleElement peBG = null;
 		    if(element!=null){
 		    	++ecount;
@@ -194,19 +218,20 @@ public class PuzzleScene implements Screen {
 		    	elementList.add(peBG);		    	
 		    }*/
 		   /////////////////
-		    int[] randomArray = new int[ecount-bgElement];
-		    for (int i=0; i<(ecount-bgElement);i++ )randomArray[i]=i+1;		    
-		    for (int i=0; i<(ecount-bgElement);i++ ){		    	
-		    		int rnd = (int)(Math.random()*(ecount-bgElement));		                  		           
+		    int[] randomArray = new int[ecount];
+		    for (int i=0; i<(ecount);i++ )randomArray[i]=i+1;		    
+		    for (int i=0; i<(ecount);i++ ){		    	
+		    		int rnd = (int)(Math.random()*(ecount));		                  		           
 		            int temp = randomArray[i];
 		            randomArray[i] = randomArray[rnd];
 		            randomArray[rnd] = temp;		            
 		        }		    
 		    
-		    for (int i=0; i<(ecount-bgElement);i++ ){
+		    for (int i=0; i<(ecount);i++ ){
 		    	/// читаем xml
 		    	element = elements.getChild(i);
 		    	String nameReg=element.get("id");
+		    	Gdx.app.log("xml","id="+ nameReg);
 		    	int x =element.getInt("x");
 		    	int y =element.getInt("y");		    	
 		    	int se = element.getInt("se", -1);	
@@ -215,19 +240,18 @@ public class PuzzleScene implements Screen {
 		    	/// вставка элемента
 		    	PuzzleElement pe;		    	
 		    	if (crop!="") {
-		    		pe = new PuzzleElement(this, textureAtlas.findRegion(crop),textureAtlas.findRegion(nameReg), randomArray[i],pfdx+x, screenHeight - y-pfdy,i+1+ecount+fz, soundName);
+		    		pe = new PuzzleElement(this, textureAtlas.findRegion(crop),textureAtlas.findRegion(nameReg), randomArray[i],pfdx+x, screenHeight - y-pfdy,i+1+fz, soundName);
 		    	}else {
-		    		pe = new PuzzleElement(this, textureAtlas.findRegion(nameReg), randomArray[i],pfdx+x, screenHeight - y-pfdy,i+1+ecount+fz, soundName);
+		    		pe = new PuzzleElement(this, textureAtlas.findRegion(nameReg), randomArray[i],pfdx+x, screenHeight - y-pfdy,i+1+fz, soundName);
 		    	}
 		    	elementList.add(pe);
 		    	if (se>=0) {
-		    		sameElements.put(se,pe);
-		    		Gdx.app.log("sameElements", "SE="+se+ "  NE="+ nameReg);
+		    		sameElements.put(se,pe);		    		
 		    	}
 		    	pe.image.setName("I"+nameReg);	    	
 		    } 				    
 		    		    
-		    puzzleFrame.setZIndex(ecount+fz+1);
+		  //  puzzleFrame.setZIndex(ecount+fz+1);
 		    bg.drawFront(ecount+fz+2);
 		    refreshZindElements();
 		   // if (bgElement>0) peBG.fixing(false);

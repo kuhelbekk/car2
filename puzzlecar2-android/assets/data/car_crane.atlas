@@ -5,92 +5,92 @@ filter: Nearest,Nearest
 repeat: none
 frame
   rotate: false
-  xy: 2, 1310
-  size: 918, 736
-  orig: 918, 736
+  xy: 2, 1309
+  size: 790, 633
+  orig: 790, 633
   offset: 0, 0
   index: -1
 5
   rotate: false
-  xy: 2, 889
-  size: 705, 419
-  orig: 705, 419
+  xy: 2, 946
+  size: 608, 361
+  orig: 608, 361
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 2, 499
-  size: 352, 388
-  orig: 352, 388
+  xy: 2, 609
+  size: 303, 335
+  orig: 303, 335
   offset: 0, 0
   index: -1
 4_full
   rotate: false
-  xy: 2, 109
-  size: 352, 388
-  orig: 352, 388
+  xy: 2, 272
+  size: 303, 335
+  orig: 303, 335
   offset: 0, 0
   index: -1
 frame2
   rotate: false
-  xy: 356, 499
-  size: 352, 388
-  orig: 352, 388
+  xy: 307, 609
+  size: 303, 335
+  orig: 303, 335
   offset: 0, 0
   index: -1
 1
   rotate: false
-  xy: 709, 1146
-  size: 180, 162
-  orig: 180, 162
+  xy: 794, 1802
+  size: 155, 140
+  orig: 155, 140
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 356, 337
-  size: 180, 160
-  orig: 180, 160
+  xy: 612, 1168
+  size: 156, 139
+  orig: 156, 139
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 709, 984
-  size: 180, 160
-  orig: 180, 160
+  xy: 2, 132
+  size: 156, 138
+  orig: 156, 138
   offset: 0, 0
   index: -1
 3_full
   rotate: false
-  xy: 356, 175
-  size: 179, 160
-  orig: 179, 160
+  xy: 307, 469
+  size: 155, 138
+  orig: 155, 138
   offset: 0, 0
   index: -1
 7
   rotate: false
-  xy: 356, 2
-  size: 166, 171
-  orig: 166, 171
-  offset: 0, 0
-  index: -1
-6
-  rotate: false
-  xy: 538, 349
-  size: 160, 148
-  orig: 160, 148
+  xy: 794, 1652
+  size: 143, 148
+  orig: 143, 148
   offset: 0, 0
   index: -1
 9
   rotate: false
-  xy: 891, 1104
-  size: 114, 204
-  orig: 114, 204
+  xy: 612, 989
+  size: 99, 177
+  orig: 99, 177
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 2, 2
+  size: 138, 128
+  orig: 138, 128
   offset: 0, 0
   index: -1
 8
   rotate: false
-  xy: 710, 867
-  size: 170, 115
-  orig: 170, 115
+  xy: 307, 367
+  size: 147, 100
+  orig: 147, 100
   offset: 0, 0
   index: -1

@@ -1,0 +1,75 @@
+
+car_buldozer.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+frame
+  rotate: false
+  xy: 2, 1371
+  size: 760, 528
+  orig: 760, 528
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 2, 1022
+  size: 740, 347
+  orig: 740, 347
+  offset: 0, 0
+  index: -1
+frame2
+  rotate: false
+  xy: 2, 673
+  size: 740, 347
+  orig: 740, 347
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 2, 437
+  size: 452, 234
+  orig: 452, 234
+  offset: 0, 0
+  index: -1
+2_full
+  rotate: false
+  xy: 2, 201
+  size: 452, 234
+  orig: 452, 234
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 764, 1743
+  size: 232, 156
+  orig: 232, 156
+  offset: 0, 0
+  index: -1
+1_full
+  rotate: false
+  xy: 456, 515
+  size: 232, 156
+  orig: 232, 156
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 2, 2
+  size: 112, 197
+  orig: 112, 197
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 764, 1617
+  size: 114, 124
+  orig: 114, 124
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 456, 427
+  size: 62, 86
+  orig: 62, 86
+  offset: 0, 0
+  index: -1

@@ -5,71 +5,71 @@ filter: Nearest,Nearest
 repeat: none
 frame
   rotate: false
-  xy: 2, 1064
-  size: 922, 653
-  orig: 922, 653
+  xy: 2, 431
+  size: 790, 560
+  orig: 790, 560
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 2, 616
-  size: 635, 446
-  orig: 635, 446
+  xy: 2, 46
+  size: 545, 383
+  orig: 545, 383
   offset: 0, 0
   index: -1
 1
   rotate: false
-  xy: 2, 425
-  size: 211, 189
-  orig: 211, 189
-  offset: 0, 0
-  index: -1
-1_full
-  rotate: false
-  xy: 639, 873
+  xy: 794, 802
   size: 211, 189
   orig: 211, 189
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 215, 426
-  size: 212, 188
-  orig: 212, 188
+  xy: 549, 267
+  size: 183, 162
+  orig: 183, 162
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 2, 235
-  size: 212, 188
-  orig: 212, 188
+  xy: 794, 638
+  size: 183, 162
+  orig: 183, 162
+  offset: 0, 0
+  index: -1
+1_full
+  rotate: false
+  xy: 549, 103
+  size: 180, 162
+  orig: 180, 162
   offset: 0, 0
   index: -1
 6
   rotate: false
-  xy: 639, 670
-  size: 195, 201
-  orig: 195, 201
-  offset: 0, 0
-  index: -1
-5
-  rotate: false
-  xy: 429, 430
-  size: 202, 184
-  orig: 202, 184
+  xy: 794, 462
+  size: 168, 174
+  orig: 168, 174
   offset: 0, 0
   index: -1
 7
   rotate: false
-  xy: 2, 2
-  size: 135, 231
-  orig: 135, 231
+  xy: 734, 230
+  size: 117, 199
+  orig: 117, 199
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 731, 69
+  size: 174, 159
+  orig: 174, 159
   offset: 0, 0
   index: -1
 8
   rotate: false
-  xy: 216, 310
-  size: 165, 114
-  orig: 165, 114
+  xy: 549, 2
+  size: 143, 99
+  orig: 143, 99
   offset: 0, 0
   index: -1
