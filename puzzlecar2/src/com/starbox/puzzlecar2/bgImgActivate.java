@@ -33,8 +33,7 @@ public class bgImgActivate extends Image {
 		drawable.resetAndPlay();
 	}
 
-	public boolean endAnim() {
-		
+	public boolean endAnim() {		
 		return drawable.isEndAnim();
 	}
 	

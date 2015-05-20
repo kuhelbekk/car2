@@ -3,72 +3,79 @@ car_beton.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+fànim
+  rotate: false
+  xy: 2, 167
+  size: 1404, 774
+  orig: 1404, 774
+  offset: 0, 0
+  index: -1
 frame
   rotate: false
-  xy: 2, 431
+  xy: 1408, 381
   size: 790, 560
   orig: 790, 560
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 2, 46
+  xy: 2200, 558
   size: 545, 383
   orig: 545, 383
   offset: 0, 0
   index: -1
 1
   rotate: false
-  xy: 794, 802
-  size: 211, 189
-  orig: 211, 189
+  xy: 2, 2
+  size: 182, 163
+  orig: 182, 163
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 549, 267
+  xy: 1408, 217
   size: 183, 162
   orig: 183, 162
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 794, 638
+  xy: 2200, 394
   size: 183, 162
   orig: 183, 162
   offset: 0, 0
   index: -1
 1_full
   rotate: false
-  xy: 549, 103
+  xy: 2747, 779
   size: 180, 162
   orig: 180, 162
   offset: 0, 0
   index: -1
 6
   rotate: false
-  xy: 794, 462
+  xy: 2747, 603
   size: 168, 174
   orig: 168, 174
   offset: 0, 0
   index: -1
-7
-  rotate: false
-  xy: 734, 230
-  size: 117, 199
-  orig: 117, 199
-  offset: 0, 0
-  index: -1
 5
   rotate: false
-  xy: 731, 69
+  xy: 186, 6
   size: 174, 159
   orig: 174, 159
   offset: 0, 0
   index: -1
+7
+  rotate: false
+  xy: 1593, 180
+  size: 117, 199
+  orig: 117, 199
+  offset: 0, 0
+  index: -1
 8
   rotate: false
-  xy: 549, 2
+  xy: 2385, 457
   size: 143, 99
   orig: 143, 99
   offset: 0, 0

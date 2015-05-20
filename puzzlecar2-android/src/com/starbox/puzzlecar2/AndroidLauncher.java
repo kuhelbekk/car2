@@ -34,7 +34,7 @@ public class AndroidLauncher extends AndroidApplication  {
 	
 	static MainClass mc;	
 	// Debug tag, for logging
-    static final String TAG = "PuzzleToy D";
+    static final String TAG = "PuzzleCar2";
     // Does the user have the premium upgrade?
     boolean mIsPremium = false;      
     // (arbitrary) request code for the purchase flow
@@ -84,8 +84,9 @@ public class AndroidLauncher extends AndroidApplication  {
     
 	@Override
     public void onCreate(Bundle savedInstanceState) {
-		
+		Log.d(TAG, "1");
         super.onCreate(savedInstanceState); 
+        Log.d(TAG, "2");
         androidOutput = new AndroidOutput(this,this);        
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
       //  getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);                
@@ -229,7 +230,7 @@ public class AndroidLauncher extends AndroidApplication  {
 
     
     void complain(String message) {
-        Log.e(TAG, "*PToy Err: " + message);
+        Log.e(TAG, "*PCar2 Err: " + message);
     }
 
 	protected void alert() {		
@@ -266,7 +267,7 @@ public class AndroidLauncher extends AndroidApplication  {
 
 	public void rateClick() {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
-		intent.setData(Uri.parse("market://details?id=com.starbox.puzzletoy"));
+		intent.setData(Uri.parse("market://details?id=com.starbox.puzzlecar2"));
 		startActivity(intent);	
 
 	}

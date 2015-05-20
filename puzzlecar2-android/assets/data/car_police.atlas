@@ -3,72 +3,79 @@ car_police.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+fanim
+  rotate: false
+  xy: 2, 339
+  size: 528, 1638
+  orig: 528, 1638
+  offset: 0, 0
+  index: -1
 frame
   rotate: false
-  xy: 2, 461
+  xy: 532, 1458
   size: 742, 519
   orig: 742, 519
   offset: 0, 0
   index: -1
 6
   rotate: false
-  xy: 2, 289
+  xy: 2, 167
   size: 325, 170
   orig: 325, 170
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 746, 712
+  xy: 532, 1188
   size: 166, 268
   orig: 166, 268
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 2, 106
+  xy: 1276, 1796
   size: 245, 181
   orig: 245, 181
   offset: 0, 0
   index: -1
 7
   rotate: false
-  xy: 329, 296
+  xy: 2, 2
   size: 232, 163
   orig: 232, 163
   offset: 0, 0
   index: -1
 1
   rotate: false
-  xy: 746, 530
+  xy: 700, 1276
+  size: 176, 180
+  orig: 176, 180
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 1276, 1614
   size: 176, 180
   orig: 176, 180
   offset: 0, 0
   index: -1
 1_full
   rotate: false
-  xy: 563, 280
+  xy: 1523, 1798
   size: 176, 179
   orig: 176, 179
   offset: 0, 0
   index: -1
 5
   rotate: false
-  xy: 2, 2
+  xy: 878, 1354
   size: 231, 102
   orig: 231, 102
   offset: 0, 0
   index: -1
-2
-  rotate: false
-  xy: 249, 107
-  size: 176, 180
-  orig: 176, 180
-  offset: 0, 0
-  index: -1
 8
   rotate: false
-  xy: 427, 184
+  xy: 329, 227
   size: 114, 110
   orig: 114, 110
   offset: 0, 0

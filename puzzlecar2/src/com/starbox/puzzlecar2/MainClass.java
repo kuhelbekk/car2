@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class MainClass extends Game {
 
@@ -124,6 +125,12 @@ public class MainClass extends Game {
 		default:
 			return "To exit, press twice.";
 		} 
+	}
+
+	public void nextLevel(String xmlName) {
+		menu2d.nextLevel(xmlName);
+		//setScreen(game.menu2d)
+		
 	}
 
 }

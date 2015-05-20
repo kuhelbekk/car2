@@ -8,5 +8,7 @@
 	<classpathentry kind="lib" path="D:/Aleksey/Dropbox/javaworkspase/Libs/gdx-backend-android.jar" sourcepath="D:/Aleksey/Dropbox/javaworkspase/puzzletoy/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
 	<classpathentry kind="lib" path="D:/Aleksey/Dropbox/javaworkspase/Libs/openiab-0.9.7.2.jar"/>
+	<classpathentry kind="lib" path="D:/Aleksey/Dropbox/javaworkspase/Libs/gdx.jar" sourcepath="D:/Aleksey/Dropbox/javaworkspase/Libs/sources/gdx-sources.jar"/>
+	<classpathentry kind="lib" path="D:/Aleksey/Dropbox/javaworkspase/Libs/extensions/gdx-box2d/gdx-box2d.jar" sourcepath="D:/Aleksey/Dropbox/javaworkspase/puzzletoy/gdx-box2d-1.4.1-sources.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>

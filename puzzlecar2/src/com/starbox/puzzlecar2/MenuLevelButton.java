@@ -21,7 +21,7 @@ public class MenuLevelButton{
 			public void clicked(InputEvent event, float x, float y) {
 				if (parent.blockButton)
 					return;
-				parent.newGame(new PuzzleScene(parent.game,xmlName), event);		
+				parent.newGame(xmlName, event);		
 			}
 		});
 		this.xmlName = xmlname;
@@ -34,7 +34,7 @@ public class MenuLevelButton{
 	
 		return btn;
 	}
-
+/*
 	
 	public void clicked(InputEvent event, float x, float y) {
 		if (parent.blockButton) return;
@@ -44,7 +44,7 @@ public class MenuLevelButton{
 		}
 	}
 	
-	
+	*/
 	
 	
 

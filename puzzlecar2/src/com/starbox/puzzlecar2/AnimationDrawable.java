@@ -1,5 +1,7 @@
 package com.starbox.puzzlecar2;
 
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.utils.BaseDrawable;
@@ -18,7 +20,7 @@ public class AnimationDrawable extends BaseDrawable {
 	public float scaleY=1;
 	private long waittime=0;
 	public int waiting =0;
-	
+	public boolean waitPlaying=false;
 	
 	public boolean isEndAnim() {
 		return endAnim;
@@ -31,7 +33,8 @@ public class AnimationDrawable extends BaseDrawable {
 	}
 
 	public void act(float delta) {
-		if (playing) {			
+		
+		if ((playing)&&(!waitPlaying)) {				
 			stateTime += delta;
 		}
 	}
@@ -43,32 +46,61 @@ public class AnimationDrawable extends BaseDrawable {
 	@Override
 	public void draw(Batch batch, float x, float y, float width,float height) {
 		animPos = anim.getKeyFrameIndex(stateTime);
-		if (playing & anim.isAnimationFinished(stateTime)) {	
-			if (loop){
+		//Gdx.app.log("animPos","= "+animPos  +"  anim.isAnimationFinished(stateTime) "+anim.isAnimationFinished(stateTime));	
+		if (playing && (anim.isAnimationFinished(stateTime) || waitPlaying )) {			
+			if (loop||waitPlaying){
 				if (waittime>0){
-					if (waittime<TimeUtils.millis())  {
+					if (waittime<TimeUtils.millis())  {						
+						waitPlaying = false;
 						waittime=0;
 						stateTime=0;
 					}
-				}else{
+				}else{					
 					waittime=TimeUtils.millis()+waiting;
 				}				
-			}else{
-				endAnim = true;
-				playing = false;	
+			}else{				
+				if (!waitPlaying){
+					Gdx.app.log("act","3 stateTime- "+ stateTime);	
+					endAnim = true;
+					playing = false;
+				}
+					
 			}
 			
+		}else{
+			//Gdx.app.log("draw","draw beep");	
 		}
 		//batch.draw(anim.getKeyFrame(stateTime), x, y, width, height);
 		batch.draw(anim.getKeyFrame(stateTime), x, y,  width/2,height/2, width, height, scaleX, scaleY, rotate);
 		
 	}
 	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	public void play() {		
 		if (!(playing || endAnim)) {
 			endAnim = false;
 			playing = true;
 			stateTime = 0;
+		}
+	}
+	
+	public void playAfterWait() {		
+		if (!(playing || endAnim)) {
+			endAnim = false;
+			playing = true;
+			waitPlaying = true;
+			stateTime = 0f;
 		}
 	}
 	

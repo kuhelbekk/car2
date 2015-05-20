@@ -3,72 +3,86 @@ car_f1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+fanim1
+  rotate: false
+  xy: 2, 187
+  size: 1075, 808
+  orig: 1075, 808
+  offset: 0, 0
+  index: -1
+fanim2
+  rotate: false
+  xy: 1079, 347
+  size: 776, 648
+  orig: 776, 648
+  offset: 0, 0
+  index: -1
 frame
   rotate: false
-  xy: 2, 527
+  xy: 1857, 551
   size: 794, 444
   orig: 794, 444
   offset: 0, 0
   index: -1
 7
   rotate: false
-  xy: 2, 342
+  xy: 2, 2
   size: 221, 183
   orig: 221, 183
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 798, 793
+  xy: 1857, 371
   size: 200, 178
   orig: 200, 178
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 2, 163
+  xy: 2653, 818
   size: 199, 177
   orig: 199, 177
   offset: 0, 0
   index: -1
 1
   rotate: false
-  xy: 225, 367
+  xy: 1079, 187
   size: 210, 158
   orig: 210, 158
   offset: 0, 0
   index: -1
 5_full
   rotate: false
-  xy: 798, 632
+  xy: 225, 26
   size: 163, 159
   orig: 163, 159
   offset: 0, 0
   index: -1
 5
   rotate: false
-  xy: 2, 2
+  xy: 2059, 390
   size: 162, 159
   orig: 162, 159
   offset: 0, 0
   index: -1
 frame2
   rotate: false
-  xy: 437, 366
+  xy: 2653, 657
   size: 162, 159
   orig: 162, 159
   offset: 0, 0
   index: -1
 6
   rotate: false
-  xy: 601, 421
+  xy: 2854, 891
   size: 159, 104
   orig: 159, 104
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 798, 563
+  xy: 1291, 278
   size: 98, 67
   orig: 98, 67
   offset: 0, 0

@@ -86,8 +86,7 @@ public  class Background {
 	    	int waiting = img.getInt("waiting", 1);	    	    	
 	    	int animFarame = img.getInt("anim", 0);	    			    	
 	    	String soundName = img.get("s","");	
-	    	int typeAnim=img.getInt("typeanim",0);	  	///0-NoAnim; 1-Sprite ; 2-rotate
-	    	
+	    	int typeAnim=img.getInt("typeanim",0);	  	///0-NoAnim; 1-Sprite ; 2-rotate	    	
 	    	
 	    	Gdx.app.log("anim","drawElement-" + nameImg);
 	    	switch (typeAnim) {
@@ -110,13 +109,11 @@ public  class Background {
 		    	TextureRegion[] Frames = game.GetAnimFrames(textureAtlasBG.findRegion(nameImg),w, h, animFarame); // создание массива кадров для анимации
 				Animation animate = new Animation(speedAnim*0.01f, Frames); // задание скорости	 анимации				
 				AnimationDrawable drawable = new AnimationDrawable(animate); // создание отрисовщика
-				bgAnimate aImg = new bgAnimate(drawable, drawableActivate, soundName ,waiting,stage, dx+x, 800-h-y +dy,z); // / компонент пузыря
-				stage.addActor(aImg);
-	    			
+				spriteAnimate aImg = new spriteAnimate(drawable, drawableActivate, soundName ,waiting,stage, dx+x, 800-h-y +dy,z, true, false); // / компонент пузыря
+				stage.addActor(aImg);	    			
 		    						
 				break;
-			case 2: //rotate
-				
+			case 2: //rotate				
 				image = new Image( textureAtlasBG.findRegion(nameImg));				
 				image.setPosition(dx+x, 800-image.getHeight()-y +dy);
 				image.setZIndex(z);

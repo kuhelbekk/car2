@@ -3,6 +3,13 @@ car_icecream.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+fanim
+  rotate: false
+  xy: 2, 947
+  size: 846, 1070
+  orig: 846, 1070
+  offset: 0, 0
+  index: -1
 frame
   rotate: false
   xy: 2, 223
@@ -19,49 +26,49 @@ frame
   index: -1
 5
   rotate: false
-  xy: 776, 761
+  xy: 433, 37
   size: 219, 184
   orig: 219, 184
   offset: 0, 0
   index: -1
-3
-  rotate: false
-  xy: 433, 51
-  size: 230, 170
-  orig: 230, 170
-  offset: 0, 0
-  index: -1
 7
   rotate: false
-  xy: 776, 525
+  xy: 850, 1783
   size: 124, 234
   orig: 124, 234
   offset: 0, 0
   index: -1
+3
+  rotate: false
+  xy: 654, 51
+  size: 230, 170
+  orig: 230, 170
+  offset: 0, 0
+  index: -1
 1
   rotate: false
-  xy: 776, 375
+  xy: 850, 1633
   size: 138, 148
   orig: 138, 148
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 776, 225
+  xy: 850, 1483
   size: 138, 148
   orig: 138, 148
   offset: 0, 0
   index: -1
 1_full
   rotate: false
-  xy: 665, 73
+  xy: 850, 1333
   size: 137, 148
   orig: 137, 148
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 804, 85
+  xy: 850, 1193
   size: 171, 138
   orig: 171, 138
   offset: 0, 0

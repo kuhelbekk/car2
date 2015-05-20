@@ -29,6 +29,7 @@ public class PuzzleElement {
 	public TextureRegion endRegion;	
 	public PuzzleScene parent;
 	public int currentAction;
+	public boolean elementMounted = false;
 	
 	protected Sound sSuccess;
 	private String sSuccessName;
@@ -137,8 +138,7 @@ public class PuzzleElement {
 			}
 
 			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-				if ((button != 0) || (pointer != 0))	return;
-				Gdx.app.log("1111", "im x=" + image.getX());
+				if ((button != 0) || (pointer != 0))	return;				
 				float px = image.getX();
 				float py = image.getY();
 				PuzzleElement pe = hit();
@@ -191,8 +191,7 @@ public class PuzzleElement {
 		image = null;
 		image = new Image(endRegion);		
 		image.setZIndex(Zindex);		
-		image.setColor(1, 1, 1, 1);	
-		Gdx.app.log("xy", "x=" + px +"  py="+py);
+		image.setColor(1, 1, 1, 1);			
 		image.setPosition(px, py);		
 		image.addAction(Actions.sequence(
 							Actions.parallel(				
@@ -250,7 +249,9 @@ public class PuzzleElement {
 			image.setPosition(330+dx-image.getWidth()/2,	parent.screenHeight -image.getHeight()/2- (index* 170)-dy+40 );
 			break;
 		}
-		image.setVisible(index < 5);
+		
+		image.setVisible((index < 5));
+		
 	}
 
 

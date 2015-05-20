@@ -12,6 +12,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -46,23 +47,24 @@ public class PuzzleScene implements Screen {
 	protected MainClass game;
 	protected PuzzleElement selectedElement;
 	protected ArrayList<PuzzleElement> elementList;	
-	protected ArrayList<Image> tempFrameList;
+	protected ArrayList<Image> tempImageList;
+	protected ArrayList<PuzzleElement> tempElementList;
     protected SameElements sameElements;
 	protected Button btnDn, btnBack;
 	protected Stage stage;
 	protected Music mFon;
-	protected Sound sGood, sCandy, sStartSound;
+	protected Sound sCandy, sStartSound;
 	protected ArrayList<Candy> listCandy;	
 	protected Image finishRays;
 	protected Image puzzleFrame;
 	protected Background bg;	
-	
-	
+	XmlReader.Element finishAnimXML;
+	int waitingFinishAnimate;
+	String xmlFileName;
 	long timeToFonMusic=0;
 	float fonSoundLevel = 1;
-	long timeToGood=0;
 	
-	protected boolean visibleFinishScene;
+	protected boolean finishAction;
 	protected Button nextLevelButton;
 	protected World world;	
 	
@@ -86,8 +88,8 @@ public class PuzzleScene implements Screen {
 	
 	public void createScene(String xmlFileName) {
 		Gdx.app.log("Game", "createScene");
-				
-		visibleFinishScene = false;
+		this.xmlFileName = xmlFileName;	
+		finishAction = false;
 		elementList = new ArrayList<PuzzleElement>();
 		/// расчет смещения пазла и фона
 		realWidth = Gdx.graphics.getWidth();
@@ -151,6 +153,12 @@ public class PuzzleScene implements Screen {
 			XmlReader xmlReader = new XmlReader();	
 			Gdx.app.log("xmlFileName","xmlFileName="+ xmlFileName);
 		    XmlReader.Element root = xmlReader.parse(Gdx.files.internal(xmlFileName)); 
+		    waitingFinishAnimate = root.getInt("waitingfinishanimate",0);	
+		    finishAnimXML = root.getChildByName("finanim");	
+		    
+			
+			
+			
 		    XmlReader.Element atlasnameE = root.getChildByName("atlas");	
 			textureAtlas = new TextureAtlas(atlasnameE.get("name"));
 		    		   		    
@@ -173,10 +181,11 @@ public class PuzzleScene implements Screen {
 		    puzzleFrame.setPosition(pfdx,screenHeight- (puzzleFrame.getHeight()+pfdy));
 		    puzzleFrame.setName("Frame");	
 		    int fz= puzzleFrame.getZIndex();
-		  
-		    
+			
 		 // временная рамка изчезает при анимации
-		 	tempFrameList = new ArrayList<Image>();
+		    tempImageList = new ArrayList<Image>();
+		    tempElementList = new ArrayList<PuzzleElement>();		    
+		    
 		 	XmlReader.Element frameE = root.getChildByName("frame");
 		 	if (frameE!=null){
 		 		for (int i=0; i<(frameE.getChildCount());i++ ){
@@ -187,21 +196,16 @@ public class PuzzleScene implements Screen {
 			    	int y =element.getInt("y");		   		    	
 			    	/// вставка элемента
 			    	Image fr = new Image(textureAtlas.findRegion(nameE));
-			    	tempFrameList.add(fr);	    	
+			    	tempImageList.add(fr);	    	
 			    	stage.addActor(fr);
 			    	fr.setPosition(pfdx+x,screenHeight- (fr.getHeight()+pfdy+y));
 			    	fz++;
 			    	fr.setZIndex(fz);
-			    	fr.setName(nameE);	    	
+			    	fr.setName(nameE);
 			    } 	
 		 	}
 		 	
 		 	
-		 			
-		 			
-		    
-		    
-		    
 		    XmlReader.Element elements = root.getChildByName("assets");
 		    int ecount = elements.getChildCount();
 		    ///// элемент поверх всех
@@ -236,7 +240,8 @@ public class PuzzleScene implements Screen {
 		    	int y =element.getInt("y");		    	
 		    	int se = element.getInt("se", -1);	
 		    	String crop = element.get("crop", "");		    	
-		    	String soundName = element.get("s");		    	
+		    	String soundName = element.get("s");	
+		    	boolean finishHide =  element.getBoolean("finishhide",false);
 		    	/// вставка элемента
 		    	PuzzleElement pe;		    	
 		    	if (crop!="") {
@@ -244,6 +249,8 @@ public class PuzzleScene implements Screen {
 		    	}else {
 		    		pe = new PuzzleElement(this, textureAtlas.findRegion(nameReg), randomArray[i],pfdx+x, screenHeight - y-pfdy,i+1+fz, soundName);
 		    	}
+		    	if(finishHide) tempElementList.add(pe);			    		
+		    	
 		    	elementList.add(pe);
 		    	if (se>=0) {
 		    		sameElements.put(se,pe);		    		
@@ -254,8 +261,7 @@ public class PuzzleScene implements Screen {
 		  //  puzzleFrame.setZIndex(ecount+fz+1);
 		    bg.drawFront(ecount+fz+2);
 		    refreshZindElements();
-		   // if (bgElement>0) peBG.fixing(false);
-		    			    
+		   // if (bgElement>0) peBG.fixing(false);			    
 		} catch (IOException e) {			
 			e.printStackTrace();
 		}
@@ -271,12 +277,8 @@ public class PuzzleScene implements Screen {
 		
 		
 		if (game.settings.isSound()) {			
-			sCandy = Gdx.audio.newSound(Gdx.files.internal("mfx/candy.mp3"));
-			
-			if (game.settings.isVoice()) {	
-				long rnd = Math.round((Math.random() * 3));
-				sGood = Gdx.audio.newSound(Gdx.files.internal("mfx/good"+rnd+game.getLangStr()+".mp3"));
-			}			
+			sCandy = Gdx.audio.newSound(Gdx.files.internal("mfx/candy.mp3"));			
+					
 		}
 
 		// /back
@@ -346,24 +348,20 @@ public class PuzzleScene implements Screen {
 				//Gdx.app.log("Game", "setVolume = "+(((float)(TimeUtils.millis()-timeToFonMusic))/2000f));
 				 mFon.setVolume((((float)(TimeUtils.millis()-timeToFonMusic))/2000f)*fonSoundLevel);
 			}
-		}
-		if (timeToGood>0)
-			if ((timeToGood+1500)<TimeUtils.millis()) {
-				if (sGood != null)
-					sGood.play(1f);	
-				timeToGood=0;
-			}
+		}		
 		
 		world.step(1f/60f, 0, 0);  		
 		Gdx.gl.glClearColor(1,1,1,1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 
-		if (visibleFinishScene) {// / лучи счастья
-			drawFinish();
+		if (finishAction) {//  собрали пазл
+			drawFinishAction();
 		}	
 		
 		
+	      
+	      
 		if (listCandy != null) {
 			if (!listCandy.isEmpty()) { // убийство лопнутых и улетевших пузырей
 				Iterator<Candy> iterator = listCandy.iterator();
@@ -378,8 +376,8 @@ public class PuzzleScene implements Screen {
 					}
 				}
 			}				
-		}
-
+		}		
+	      
 		stage.act(delta);
 		stage.draw();
 	}
@@ -414,10 +412,7 @@ public class PuzzleScene implements Screen {
 			mFon.dispose();
 		}
 		
-		
 	
-		if (sGood != null)
-			sGood.dispose();
 		if (sCandy != null)
 			sCandy.dispose();
 		for (PuzzleElement p : elementList) {
@@ -435,6 +430,7 @@ public class PuzzleScene implements Screen {
 	public void elementMounted(PuzzleElement pe) {
 		int i = pe.index;
 		pe.index = 0;
+		pe.elementMounted = true;
 		refreshZindElements();
 		boolean fEndScene = true;
 		for (PuzzleElement p : elementList) {
@@ -445,11 +441,16 @@ public class PuzzleScene implements Screen {
 			if (p.index > 0)
 				fEndScene = false;
 		}
+		// конец игры
 		if (fEndScene) {
 			if (mFon != null)
 				if (mFon.isPlaying())
-					mFon.stop();			
-			visibleFinishScene = true;
+					mFon.stop();
+			
+			
+			
+			finishAction = true;
+			waitingFinishAnimate+=TimeUtils.millis();
 		}
 	}
 	
@@ -531,13 +532,89 @@ public class PuzzleScene implements Screen {
 	}
 	
 
-	public void showFinishScreen() {
+	private void showFinishScreen() {
 		Gdx.app.log("Game", "showFinishScreen");
-		// тушим рамку
-		//puzzleFrame.addAction(Actions.alpha(0.001f, 1.5f, Interpolation.sine)				);		
-		// двигаем пазл
+		// тушим лишний фон
+		for (Image ifr: tempImageList) 	ifr.setVisible(false);
+		for (PuzzleElement pe: tempElementList) 	pe.image.setVisible(false);
+			
+		//
 		
 		
+		
+		int zind=stage.getActors().size;
+		XmlReader.Element img;
+		Image image;
+		for (int i=0; i<(finishAnimXML.getChildCount());i++ ){
+	    	/// читаем xml
+			img = finishAnimXML.getChild(i);
+	    	String nameImg=img.get("id");
+	    	int x =img.getInt("x");
+	    	int y =img.getInt("y");	
+	    	int w =img.getInt("w",0);
+	    	int h =img.getInt("h",0);
+	    	int z = img.getInt("z", 0)+zind;
+	    	int speedAnim = img.getInt("speed", 5);
+	    	int waiting = img.getInt("waiting", 0);	    	    	
+	    	int animFarame = img.getInt("anim", 0);	    			    	
+	    	String soundName = img.get("s","");	
+	    	int typeAnim = img.getInt("typeanim",0);	  	///0-NoAnim; 1-Sprite ; 2-rotate	    	
+	    	boolean loopAnim = img.getBoolean("loop",false);
+	    	
+	    	switch (typeAnim) {
+	    	case 0:///NoAnim
+	    		image = new Image( textureAtlas.findRegion(nameImg));				
+				image.setPosition(pfdx+x, 800-image.getHeight()-y -pfdy);
+				image.setZIndex(z);
+				stage.addActor(image);	
+	    		break;
+			case 1: //Sprite
+				//AnimationDrawable drawableActivate = null;		   	
+		    	/// вставка элемента      	
+				Gdx.app.log("anim","drawElement-" + nameImg);
+				TextureRegion tr = textureAtlas.findRegion(nameImg);
+				Gdx.app.log("anim","TextureRegion- " + tr);
+		    	TextureRegion[] Frames = game.GetAnimFrames(tr,w, h, animFarame); // создание массива кадров для анимации
+				Animation animate = new Animation(speedAnim*0.01f, Frames); // задание скорости	 анимации				
+				AnimationDrawable drawable = new AnimationDrawable(animate); // создание отрисовщика
+				spriteAnimate aImg = new spriteAnimate(drawable, null, soundName ,waiting,stage, pfdx+x, screenHeight-y-h -pfdy,z, loopAnim, waiting>1); // 
+			
+				stage.addActor(aImg);   			
+		    						
+				break;
+			case 2: //rotate
+				
+				image = new Image( textureAtlas.findRegion(nameImg));				
+				image.setPosition(pfdx+x, 800-image.getHeight()-y -pfdy);
+				image.setZIndex(z);
+				image.setOrigin(image.getWidth()/2, image.getHeight()/2);
+				image.addAction(Actions.forever(Actions.rotateBy(90, speedAnim)));
+				stage.addActor(image);
+				break;
+			case 7: //particle emmiter.
+				ParticleEffect pe;
+				ParticleEffectActor pea;
+				pe = new ParticleEffect();
+				pe.load(Gdx.files.internal(nameImg),Gdx.files.internal(""));
+			    pe.getEmitters().first().setPosition( pfdx+x, screenHeight-y -pfdy);
+			    pe.start();
+			    
+				pea = new ParticleEffectActor(pe);	
+				pea.setPosition(pfdx+x, screenHeight-y -pfdy);
+			    stage.addActor(pea);
+				
+				
+				break;
+			}  	
+ 		
+		}		
+		
+		finishAnimXML=null;		
+		
+		
+	}
+
+	private void showFinishButton() {
 		finishRays.setColor(1, 1, 1, 0);	
 		finishRays.setVisible(true);
 		// пошли лучики 
@@ -561,14 +638,11 @@ public class PuzzleScene implements Screen {
 		nextLevelButton.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				Gdx.app.log("EndScene", "EndPuzzleCar");
-				//	game.setScreen(new PuzzleDuck(game));
-					
-					game.setScreen(game.menu2d);
-					dispose();
+				game.nextLevel(xmlFileName);
+				dispose();
 				
 			}
 		});		
-		
 		
 		nextLevelButton.setColor(1, 1, 1, 0.01f);	
 		float brSize = 217;
@@ -588,10 +662,6 @@ public class PuzzleScene implements Screen {
 							));	
 		
 		stage.addActor(nextLevelButton);
-		timeToGood=TimeUtils.millis();
-		
-		
-		
 		
 		if (game.settings.isMusic() & game.settings.isSound()) {
 			mFon.stop();
@@ -602,21 +672,27 @@ public class PuzzleScene implements Screen {
 			mFon.play();		
 			timeToFonMusic = TimeUtils.millis();	
 		}
-		
 	}
-
-	private void drawFinish() {
-		if (nextLevelButton == null) { // / фары не отмигали				
-					showFinishScreen();		
-						
-		} else { // ///// показываем конфеты
+	
+	private void drawFinishAction() {		
+		//анимация собранного пазла	
+		if (nextLevelButton == null) { // / фары не отмигали
 			
+			if(finishAnimXML==null){
+				if (waitingFinishAnimate<TimeUtils.millis()){
+					showFinishButton();
+				}
+			}else{
+				showFinishScreen();	
+			}
+			
+											
+		} else { // ///// показываем конфеты			
 			if (nextLevelButton.getActions().size==0) {
 				if (listCandy==null) {					
 					showCandy();	
 				}
-			} else {
-				
+			} else {				
 
 			}
 

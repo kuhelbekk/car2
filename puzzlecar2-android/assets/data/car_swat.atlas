@@ -10,6 +10,13 @@ frame
   orig: 820, 554
   offset: 0, 0
   index: -1
+fanim
+  rotate: false
+  xy: 824, 394
+  size: 711, 592
+  orig: 711, 592
+  offset: 0, 0
+  index: -1
 4
   rotate: false
   xy: 2, 262
@@ -19,7 +26,7 @@ frame
   index: -1
 5
   rotate: false
-  xy: 824, 734
+  xy: 1537, 734
   size: 130, 252
   orig: 130, 252
   offset: 0, 0
@@ -40,21 +47,21 @@ frame
   index: -1
 1
   rotate: false
-  xy: 824, 578
+  xy: 1669, 832
   size: 162, 154
   orig: 162, 154
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 824, 422
+  xy: 1833, 832
   size: 162, 154
   orig: 162, 154
   offset: 0, 0
   index: -1
 1_full
   rotate: false
-  xy: 442, 276
+  xy: 1537, 578
   size: 161, 154
   orig: 161, 154
   offset: 0, 0
@@ -68,7 +75,7 @@ frame
   index: -1
 7
   rotate: false
-  xy: 605, 364
+  xy: 442, 364
   size: 137, 66
   orig: 137, 66
   offset: 0, 0

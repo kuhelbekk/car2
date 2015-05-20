@@ -62,6 +62,7 @@ public class Menu2d implements Screen {
 	long timeToFonMusic=0;
 	
 	public ArrayList<Button> btnList;
+	public ArrayList<String> xmlNameLevelList;
 	private boolean startGame;
 
 	public Menu2d(MainClass game) {
@@ -131,6 +132,7 @@ public class Menu2d implements Screen {
 		
 		skin = new Skin(textureAtlas);
 		btnList = new ArrayList<Button>();
+		xmlNameLevelList = new ArrayList<String>() ;
 		Image bg = new Image(textureAtlas.findRegion("bg"));
 		bg.setPosition(dx, 0);
 		stage.addActor(bg);
@@ -181,7 +183,8 @@ public class Menu2d implements Screen {
 							Gdx.app.log("menu xml", "get btn - " + ((i*cols)+j) );
 							btnE = btnsE.getChild((i*cols)+j);
 							Gdx.app.log("start", "screenWidth = " + screenWidth				+ " screenHeight = " + screenHeight);
-							btn = addLevelBtn(btnE.get("img_index"),btnE.get("xml_name"));							
+							btn = addLevelBtn(btnE.get("img_index"),btnE.get("xml_name"));	
+							if (btnE.getBoolean("premium")) PremiumButtons.add(btn);
 							table11.add(btn).expand();
 							}
 													
@@ -552,10 +555,8 @@ public class Menu2d implements Screen {
 			mFon.play();
 			mFon.setVolume(0.01f);
 			timeToFonMusic = TimeUtils.millis();	
-		}		
-			
-		blockButton = false;
-		
+		}			
+		blockButton = false;		
 		if (startGame ){  // непонятные рандомные костыли
 			startGame = false;
 			showFirstScreen(true);	
@@ -626,6 +627,7 @@ public class Menu2d implements Screen {
 	private Button addLevelBtn(String index, String xmlname) {
 		
 		Gdx.app.log("addLevelBtn", "index - " +index+"  xmlname - "+ xmlname);
+		xmlNameLevelList.add(xmlname);
 		ButtonStyle bs = new ButtonStyle();
 		bs.up = skin.getDrawable(index+"_up");
 		bs.down = skin.getDrawable(index+"_dn");
@@ -746,14 +748,17 @@ public class Menu2d implements Screen {
 		}
 	}
 
-	public void newGame(Screen screen, InputEvent event) {
+	public void newGame(String xmlName, InputEvent event) {		
+		blockButton = true;
+		Screen screen = new PuzzleScene(game,xmlName);
+		
 		if (event.getButton() > 0)
 			return;
 		if (game.settings.isSound())
 			sButton.play();
 		Gdx.app.log("BtnClick", screen.getClass().getName());
 		game.setScreen(screen);
-		blockButton = true;
+		
 	}
 
 	private void btnsTochDisable(Touchable tch, Button parent) {
@@ -837,5 +842,25 @@ public class Menu2d implements Screen {
 		btnLangRu.setChecked(game.settings.getLangID()==1);				
 		btnLangFr.setChecked(game.settings.getLangID()==2);
 		btnLangDe.setChecked(game.settings.getLangID()==3);
+	}
+
+	public void nextLevel(String xmlName) {
+		
+		for (String xmlN : xmlNameLevelList) {
+			if (xmlName.equals(xmlN)) {
+				Screen screen;
+			
+				if (xmlNameLevelList.indexOf(xmlN)<(xmlNameLevelList.size()-1)) {
+					 screen = new PuzzleScene(game,xmlNameLevelList.get(xmlNameLevelList.indexOf(xmlN)+1));
+					
+				}	else{
+					 screen = new PuzzleScene(game,xmlNameLevelList.get(0));
+				}
+				game.setScreen(screen);
+			}
+			
+		}
+		
+		
 	}
 }

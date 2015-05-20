@@ -5,49 +5,56 @@ filter: Nearest,Nearest
 repeat: none
 frame
   rotate: false
-  xy: 2, 922
+  xy: 2, 406
   size: 806, 615
   orig: 806, 615
   offset: 0, 0
   index: -1
+fanim
+  rotate: false
+  xy: 2, 140
+  size: 264, 264
+  orig: 264, 264
+  offset: 0, 0
+  index: -1
 4
   rotate: false
-  xy: 2, 656
+  xy: 810, 757
   size: 257, 264
   orig: 257, 264
   offset: 0, 0
   index: -1
 7
   rotate: false
-  xy: 2, 390
+  xy: 268, 140
   size: 256, 264
   orig: 256, 264
   offset: 0, 0
   index: -1
 5
   rotate: false
-  xy: 261, 750
+  xy: 1069, 851
   size: 331, 170
   orig: 331, 170
   offset: 0, 0
   index: -1
 1
   rotate: false
-  xy: 2, 140
+  xy: 810, 507
   size: 219, 248
   orig: 219, 248
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 810, 1288
+  xy: 526, 155
   size: 145, 249
   orig: 145, 249
   offset: 0, 0
   index: -1
 6
   rotate: false
-  xy: 594, 752
+  xy: 1402, 853
   size: 191, 168
   orig: 191, 168
   offset: 0, 0

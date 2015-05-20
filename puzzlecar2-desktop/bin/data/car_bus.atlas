@@ -3,72 +3,79 @@ car_bus.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+fanim
+  rotate: false
+  xy: 2, 171
+  size: 1232, 832
+  orig: 1232, 832
+  offset: 0, 0
+  index: -1
 frame
   rotate: false
-  xy: 2, 416
+  xy: 1236, 415
   size: 764, 588
   orig: 764, 588
   offset: 0, 0
   index: -1
 1
   rotate: false
-  xy: 2, 247
+  xy: 2, 2
   size: 281, 167
   orig: 281, 167
   offset: 0, 0
   index: -1
 4
   rotate: false
-  xy: 768, 788
+  xy: 1236, 197
   size: 231, 216
   orig: 231, 216
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 2, 2
+  xy: 1469, 170
   size: 148, 243
   orig: 148, 243
   offset: 0, 0
   index: -1
 3
   rotate: false
-  xy: 285, 267
+  xy: 285, 22
   size: 197, 147
   orig: 197, 147
   offset: 0, 0
   index: -1
 7
   rotate: false
-  xy: 768, 633
+  xy: 1619, 260
   size: 147, 153
   orig: 147, 153
   offset: 0, 0
   index: -1
 8
   rotate: false
-  xy: 768, 633
+  xy: 1619, 260
   size: 147, 153
   orig: 147, 153
   offset: 0, 0
   index: -1
 wheel
   rotate: false
-  xy: 768, 480
+  xy: 1768, 262
   size: 140, 151
   orig: 140, 151
   offset: 0, 0
   index: -1
 5
   rotate: false
-  xy: 484, 273
+  xy: 484, 28
   size: 137, 141
   orig: 137, 141
   offset: 0, 0
   index: -1
 6
   rotate: false
-  xy: 623, 273
+  xy: 623, 28
   size: 133, 141
   orig: 133, 141
   offset: 0, 0
