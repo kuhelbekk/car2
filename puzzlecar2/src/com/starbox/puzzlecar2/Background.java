@@ -51,38 +51,19 @@ public  class Background {
 			stage.addActor(shelf);
 			if (stikerScene){
 				shelf.setPosition(15,31+dy);
-				/*
-				for (int i=0; i<(fWidth/10 -6);i++) /// фон под стикеры
-					for (int j=0; j<(fHeight/10 -6);j++){
-						Image img=null;
-						if (i==0){  /// лево
-							if(j==0){
-								img = new Image(game.commonAtlas.findRegion("corner_lt"));
-								img.setPosition(243, screenHeight-40-25);
-							}else
-							if(j==(fHeight/10 -7)){
-								img = new Image(game.commonAtlas.findRegion("corner_bl"));
-								img.setPosition(243, 3+25);
-							}
-						}
-						if (img!=null){
-							img.setZIndex(fz++);							
-							stage.addActor(img);
-						}	
-					}	*/
 				
 				
 				
-				createImgBar("center",280, 37+25, screenWidth-(36+25)-280, screenHeight-(37+25)*2,fz++);
+				createImgBar("center",280, 37+25, screenWidth-(37+25)-280, screenHeight-(37+25)*2,fz++);
 				createImgBar("bar_left",243,37+25, 0, screenHeight-(37+25)*2,fz++);
 				createImgBar("bar_right",screenWidth-(37+25), 37+25, 0, screenHeight-(37+25)*2,fz++);
-				createImgBar("bar_top",280, screenHeight-(37+25), screenWidth-280-(36+25) , 0 ,fz++);
-				createImgBar("bar_bottom",280, 26 ,   screenWidth-(36+25)-280 , 0   ,fz++);
+				createImgBar("bar_top",280, screenHeight-(37+25), screenWidth-280-(37+25) , 0 ,fz++);
+				createImgBar("bar_bottom",280, 25 ,   screenWidth-(37+25)-280 , 0   ,fz++);
 				
 				createImgBar("corner_lt",243, screenHeight-(25+37) ,  0 , 0   ,fz++);
-				createImgBar("corner_bl",243, 26 ,  0 , 0   ,fz++);
+				createImgBar("corner_bl",243, 25 ,  0 , 0   ,fz++);
 				createImgBar("corner_rt",screenWidth-(37+25), screenHeight-(25+37) ,  0 , 0   ,fz++);
-				createImgBar("corner_br",screenWidth-(37+25), 26 ,  0 , 0   ,fz++);
+				createImgBar("corner_br",screenWidth-(37+25), 25 ,  0 , 0   ,fz++);
 				
 			}else{
 				shelf.setPosition(225+dx,31+dy);
