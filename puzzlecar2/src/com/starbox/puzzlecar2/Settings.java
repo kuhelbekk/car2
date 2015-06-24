@@ -73,9 +73,7 @@ public class Settings {
 		if (Locale.getDefault().getDisplayLanguage().equals("русский")) defLang=1;
 		if (Locale.getDefault().getDisplayLanguage().equals("français")) defLang=2;	
 		//if (Locale.getDefault().getDisplayLanguage().equals("Deutsch")) defLang=3;
-		
-
-		this.langId = prefs.getInteger("LangID", defLang);		
+	    this.langId = prefs.getInteger("LangID", defLang);		
 		premium = prefs.getString("ID", "");
 	}
 

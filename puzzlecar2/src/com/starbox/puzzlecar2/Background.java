@@ -28,7 +28,7 @@ public  class Background {
 	
 	
 	
-	public Background(Stage stage, MainClass game, String xmlname, int screenWidth,int screenHeight ) {	
+	public Background(Stage stage, MainClass game, String xmlname, int screenWidth,int screenHeight, boolean stikerScene ) {	
 		this.stage=stage;
 		this.game =game;
 		try {		    
@@ -46,10 +46,47 @@ public  class Background {
 			dy =(int) (screenHeight -game.maxHeight)/2;	
 			bg.setPosition(dx,dy);	
 			
-			drawBack( bg.getZIndex());			
+			int fz = drawBack( bg.getZIndex());			
 			shelf = new Image(game.commonAtlas.findRegion("polka"));
 			stage.addActor(shelf);
-			shelf.setPosition(225+dx,31+dy);
+			if (stikerScene){
+				shelf.setPosition(15,31+dy);
+				/*
+				for (int i=0; i<(fWidth/10 -6);i++) /// фон под стикеры
+					for (int j=0; j<(fHeight/10 -6);j++){
+						Image img=null;
+						if (i==0){  /// лево
+							if(j==0){
+								img = new Image(game.commonAtlas.findRegion("corner_lt"));
+								img.setPosition(243, screenHeight-40-25);
+							}else
+							if(j==(fHeight/10 -7)){
+								img = new Image(game.commonAtlas.findRegion("corner_bl"));
+								img.setPosition(243, 3+25);
+							}
+						}
+						if (img!=null){
+							img.setZIndex(fz++);							
+							stage.addActor(img);
+						}	
+					}	*/
+				
+				
+				
+				createImgBar("center",280, 37+25, screenWidth-(36+25)-280, screenHeight-(37+25)*2,fz++);
+				createImgBar("bar_left",243,37+25, 0, screenHeight-(37+25)*2,fz++);
+				createImgBar("bar_right",screenWidth-(37+25), 37+25, 0, screenHeight-(37+25)*2,fz++);
+				createImgBar("bar_top",280, screenHeight-(37+25), screenWidth-280-(36+25) , 0 ,fz++);
+				createImgBar("bar_bottom",280, 26 ,   screenWidth-(36+25)-280 , 0   ,fz++);
+				
+				createImgBar("corner_lt",243, screenHeight-(25+37) ,  0 , 0   ,fz++);
+				createImgBar("corner_bl",243, 26 ,  0 , 0   ,fz++);
+				createImgBar("corner_rt",screenWidth-(37+25), screenHeight-(25+37) ,  0 , 0   ,fz++);
+				createImgBar("corner_br",screenWidth-(37+25), 26 ,  0 , 0   ,fz++);
+				
+			}else{
+				shelf.setPosition(225+dx,31+dy);
+			}
 			
 		} catch (IOException e) {			
 			e.printStackTrace();
@@ -58,9 +95,23 @@ public  class Background {
 	}
 
 	
-	public void drawBack(int zind){	
+	private void createImgBar(String imgName, float px, float py, float pWidth, float pHeight, int zind) {
+		Image img = new Image(game.commonAtlas.findRegion(imgName));
+		
+		img.setPosition(px,py);
+		if (pWidth==0) pWidth = img.getWidth();
+		if (pHeight==0) pHeight = img.getHeight();
+		img.setSize(pWidth, pHeight);
+		img.setZIndex(zind);							
+		stage.addActor(img);
+		
+		
+	}
+
+
+	public int drawBack(int zind){	
 		 Gdx.app.log("anim","drawBack");
-		 drawElements(backE, zind);		
+		 return  drawElements(backE, zind);		
 	}
 	
 	
@@ -69,10 +120,11 @@ public  class Background {
 		 drawElements(frontE, zind);	
 	}
 	
-	private void drawElements(XmlReader.Element Elem, int zind){
+	private int drawElements(XmlReader.Element Elem, int zind){
 		
 		 XmlReader.Element img;
 		 Image image;
+		 int res=0;
 		 for (int i=0; i<(Elem.getChildCount());i++ ){
 	    	/// читаем xml
 			img = Elem.getChild(i);
@@ -82,6 +134,7 @@ public  class Background {
 	    	int w =img.getInt("w",0);
 	    	int h =img.getInt("h",0);
 	    	int z = img.getInt("z", 0)+zind;
+	    	if (res<z)res=z;
 	    	int speedAnim = img.getInt("speed", 5);
 	    	int waiting = img.getInt("waiting", 1);	    	    	
 	    	int animFarame = img.getInt("anim", 0);	    			    	
@@ -98,8 +151,7 @@ public  class Background {
 	    		break;
 			case 1: //Sprite
 				AnimationDrawable drawableActivate = null;
-		    	if (img.getChildByName("activate")!=null){
-		    		Gdx.app.log("anim","activate!=null");
+		    	if (img.getChildByName("activate")!=null){		    		
 		    		XmlReader.Element imgAct =img.getChildByName("activate");	    		
 		    		TextureRegion[] frames = game.GetAnimFrames(textureAtlasBG.findRegion(imgAct.get("name")),w, h, imgAct.getInt("anim")); // создание массива кадров для анимации
 					Animation animateAct = new Animation(imgAct.getInt("speed")*0.01f, frames); // задание скорости	 анимации				
@@ -127,6 +179,7 @@ public  class Background {
 	    	   	
 	    	    	
 	    } 		
+		 return res+zind;
 	}
 
 }

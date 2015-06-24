@@ -163,7 +163,7 @@ public class PuzzleScene implements Screen {
 			textureAtlas = new TextureAtlas(atlasnameE.get("name"));
 		    		   		    
 		    XmlReader.Element bgnamexmlE = root.getChildByName("bg");
-		   	bg = new Background( stage, game, bgnamexmlE.get("name"), screenWidth, screenHeight );
+		   	bg = new Background( stage, game, bgnamexmlE.get("name"), screenWidth, screenHeight, false );
 		    
 		   	String startSoundName = root.get("s");		    
 		    if (game.settings.isSound() & game.settings.isVoice() & (!startSoundName.equals(""))) {			    	

@@ -50,12 +50,12 @@ public class Menu2d implements Screen {
 	private Skin skin;
 	private Image gameName,rays;
 	
-	private Button btnPlay;
+	private Button btnPuzzle, btnStikers;
 	private Table table11,tableSettings, tableLangs;
 	private Button btnBack;
 	protected Sound sButton;
 	protected Button  btnSpeech,btnMusic,btnLangRu,btnLangEn,btnLangFr,btnLangDe,btnLang;
-	protected Image arrow,sticker;
+	protected Image arrow;
 	private long timeToExit;
 	private boolean closeLangTable = false;
 	protected Music mFon;
@@ -153,8 +153,8 @@ public class Menu2d implements Screen {
 		stage.addActor(gameName);
 		
 		
-		btnPlay = addBtnOnMenu("btn_1_up", "btn_1_dn","","",screenWidth/2-168, screenHeight-619,true);
-		btnPlay.addListener(new ClickListener() {
+		btnPuzzle = addBtnOnMenu("btn_1_up", "btn_1_dn","","",screenWidth/2-362-40, screenHeight-650,true);
+		btnPuzzle.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				if (game.settings.isSound())
 					sButton.play();				
@@ -162,6 +162,20 @@ public class Menu2d implements Screen {
 			}
 		});
 		
+		btnStikers = addBtnOnMenu("btn_2_up", "btn_2_dn","","",screenWidth/2+40, screenHeight-650,true);
+		btnStikers.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				if (game.settings.isSound())	sButton.play();				
+				blockButton = true;
+				Screen screen = new StickerScene(game);		
+				if (event.getButton() > 0)
+					return;
+				if (game.settings.isSound())
+					sButton.play();
+				
+				game.setScreen(screen);
+			}
+		});
 		
 		
 		try {
@@ -439,7 +453,6 @@ public class Menu2d implements Screen {
 			tableLangs.setColor(1, 1, 1, 1);
 			tableLangs.addAction(Actions.alpha(0,1  ,Interpolation.pow4In));
 			arrow.remove();
-			sticker.remove();
 			lablePay.remove();
 		}				
 		switch (game.settings.getLangID()) {
@@ -480,10 +493,7 @@ public class Menu2d implements Screen {
 		});		
 		stage.addActor(arrow);		
 		
-		if (game.getLangStr().equals("_de"))sticker = new Image(textureAtlas.findRegion("sticker_en"));	/// костыль
-			else sticker = new Image(textureAtlas.findRegion("sticker"+game.getLangStr()));	
-		sticker.setPosition(screenWidth/2+50, screenHeight-420);
-		stage.addActor(sticker);	
+			
 		
 		
 		if (game.getLangStr().equals("_de")) lablePay = new Image(textureAtlas.findRegion("by_txt_en"));  	/// костыль
@@ -750,8 +760,7 @@ public class Menu2d implements Screen {
 
 	public void newGame(String xmlName, InputEvent event) {		
 		blockButton = true;
-		Screen screen = new PuzzleScene(game,xmlName);
-		
+		Screen screen = new PuzzleScene(game,xmlName);		
 		if (event.getButton() > 0)
 			return;
 		if (game.settings.isSound())
@@ -786,19 +795,22 @@ public class Menu2d implements Screen {
 										Actions.scaleTo(1, 1,0.5f,Interpolation.pow2Out)
 										)));	
 		
-		sticker.setColor(1, 1, 1, 0f);
-		sticker.setScale(1.2f);
-		sticker.addAction(Actions.sequence(Actions.alpha(0 , delay+1f),
-									Actions.parallel(Actions.alpha(1, 0.3f),
-													 Actions.scaleTo(1, 1,0.3f,Interpolation.sine)
-						)));	
 		
 		
-		btnPlay.setColor(1, 1, 1, 0f);
-		btnPlay.setScale(1.2f);
-		btnPlay.addAction(Actions.sequence(Actions.alpha(0 ,delay+0.7f),
+		
+		btnPuzzle.setColor(1, 1, 1, 0f);
+		btnPuzzle.setScale(1.2f);
+		btnPuzzle.addAction(Actions.sequence(Actions.alpha(0 ,delay+0.7f),
 										Actions.parallel( Actions.alpha(1, 0.5f),Actions.scaleTo(1, 1,0.5f)
 										)));
+		
+		btnStikers.setColor(1, 1, 1, 0f);
+		btnStikers.setScale(1.2f);
+		btnStikers.addAction(Actions.sequence(Actions.alpha(0 ,delay+0.7f),
+										Actions.parallel( Actions.alpha(1, 0.5f),Actions.scaleTo(1, 1,0.5f)
+										)));
+		
+		
 		tableSettings.setColor(1, 1, 1, 0f);
 		tableSettings.addAction(Actions.sequence(Actions.alpha(0f , delay+1f),	Actions.alpha(1f, 0.3f)));
 		btnLang.setColor(1, 1, 1, 0f);
@@ -810,9 +822,9 @@ public class Menu2d implements Screen {
 		tableSettings.setVisible(true);
 		btnLang.setVisible(true);
 		arrow.setVisible(true);
-		btnPlay.setVisible(true);
+		btnPuzzle.setVisible(true);
+		btnStikers.setVisible(true);
 		gameName.setVisible(true);
-		sticker.setVisible(true);
 		rays.setVisible(true);
 		
 	}
@@ -824,10 +836,10 @@ public class Menu2d implements Screen {
 		btnLang.setVisible(false);
 		arrow.setVisible(false);
 		tableLangs.setVisible(false);
-		btnPlay.setVisible(false);
+		btnPuzzle.setVisible(false);
+		btnStikers.setVisible(false);
 		gameName.setVisible(false);
 		rays.setVisible(false);
-		sticker.setVisible(false);
 		table11.setVisible(true);		
 		table11.addAction(Actions.parallel(
 				Actions.sequence(Actions.moveTo(table11.getX()-0.25f*table11.getWidth(),table11.getY()- 0.25f*table11.getHeight()),Actions.moveTo(table11.getX(), table11.getY(), 0.7f, Interpolation.pow3Out)),

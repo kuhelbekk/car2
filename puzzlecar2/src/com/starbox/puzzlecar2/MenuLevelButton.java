@@ -34,17 +34,7 @@ public class MenuLevelButton{
 	
 		return btn;
 	}
-/*
-	
-	public void clicked(InputEvent event, float x, float y) {
-		if (parent.blockButton) return;
-		if ( event instanceof InputEvent  ){
-			Gdx.app.log("click level btn ", "xmlName - " + xmlName );
-			parent.newGame(new PuzzleScene(parent.game,xmlName),(InputEvent)event);	
-		}
-	}
-	
-	*/
+
 	
 	
 
