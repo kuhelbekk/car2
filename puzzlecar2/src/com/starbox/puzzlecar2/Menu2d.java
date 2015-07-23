@@ -148,12 +148,12 @@ public class Menu2d implements Screen {
 		
 		
 		gameName = new Image(textureAtlas.findRegion("gameName"));
-		gameName.setPosition(screenWidth / 2 - gameName.getWidth() / 2,        screenHeight - 200 - gameName.getHeight()/2);
+		gameName.setPosition(screenWidth / 2 - gameName.getWidth() / 2,        screenHeight - 180 - gameName.getHeight()/2);
 		gameName.setOrigin(	gameName.getWidth() / 2,	gameName.getHeight() / 2);		
 		stage.addActor(gameName);
 		
 		
-		btnPuzzle = addBtnOnMenu("btn_1_up", "btn_1_dn","","",screenWidth/2-362-40, screenHeight-650,true);
+		btnPuzzle = addBtnOnMenu("btn_1_up", "btn_1_dn","","",screenWidth/2-362-40, screenHeight-620,true);
 		btnPuzzle.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				if (game.settings.isSound())
@@ -162,7 +162,7 @@ public class Menu2d implements Screen {
 			}
 		});
 		
-		btnStikers = addBtnOnMenu("btn_2_up", "btn_2_dn","","",screenWidth/2+40, screenHeight-650,true);
+		btnStikers = addBtnOnMenu("btn_2_up", "btn_2_dn","","",screenWidth/2+40, screenHeight-620,true);
 		btnStikers.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				if (game.settings.isSound())	sButton.play();				
@@ -189,7 +189,7 @@ public class Menu2d implements Screen {
 		    	// // menu level 11
 		    	//Gdx.app.log("menu xml", "img_index = " + realWidth + " realHeight = "				+ realHeight);
 				table11 = new Table();			
-				table11.setBounds(10, 5, screenWidth - 20, screenHeight - 20);
+				table11.setBounds(screenWidth/2-500, screenHeight/2-360,1000, 720);
 				PremiumButtons = new ArrayList<Button>();
 				for (int i = 0; i< rows; i++){
 					for (int j = 0; j< cols ; j++){
@@ -221,12 +221,12 @@ public class Menu2d implements Screen {
 	
 		
 		tableLangs = new Table();
-		tableLangs.setBounds(screenWidth/2+170, 64 , 87, 175);			//////////////////////////////////////////////////
+		tableLangs.setBounds(screenWidth-97, 67 , 87, 175);			//////////////////////////////////////////////////
 		
 		tableSettings = new Table(); 
-		tableSettings.setBounds(screenWidth/2-150, 5, 300, 54);					/////////////////////////////////////////////
+		tableSettings.setBounds(screenWidth/2-190, 3, 380, 92);					/////////////////////////////////////////////
 		tableSettings.addAction(Actions.sequence(Actions.alpha(0f, 0),
-				Actions.alpha(1f, 1.5f)));
+				Actions.alpha(1f, 0.5f)));
 		
 		
 		stage.addActor(tableLangs);
@@ -457,16 +457,16 @@ public class Menu2d implements Screen {
 		}				
 		switch (game.settings.getLangID()) {
 		case 1:
-			btnLang = addBtnOnMenu("ru_up", "ru_act", "ru_na", "", screenWidth/2+170, 5, true );			
+			btnLang = addBtnOnMenu("ru_up", "ru_act", "ru_na", "", screenWidth-97, 10, true );			
 			break;
 		case 2:
-			btnLang = addBtnOnMenu("fr_up", "fr_act", "fr_na", "", screenWidth/2+170, 5, true);			
+			btnLang = addBtnOnMenu("fr_up", "fr_act", "fr_na", "", screenWidth-97, 10, true);			
 			break;
 		case 3:
-			btnLang = addBtnOnMenu("de_up", "de_act", "de_na", "", screenWidth/2+170, 5, true);			
+			btnLang = addBtnOnMenu("de_up", "de_act", "de_na", "", screenWidth-97, 10, true);			
 			break;	
 		default:
-			btnLang = addBtnOnMenu("en_up", "en_act", "en_na", "", screenWidth/2+170, 5, true);
+			btnLang = addBtnOnMenu("en_up", "en_act", "en_na", "", screenWidth-97, 10, true);
 			break;
 			
 			
@@ -483,7 +483,7 @@ public class Menu2d implements Screen {
 		});
 			
 		arrow = new Image(textureAtlas.findRegion("arrow_dn"));
-		arrow.setPosition(screenWidth/2+233, 25);
+		arrow.setPosition(screenWidth-35, 31);
 		arrow.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
 				if (!btnLang.isDisabled()) {
@@ -604,9 +604,7 @@ public class Menu2d implements Screen {
 
 	
 
-	private Button addBtnOnMenu(int index,String xmlname) {
-		return addBtnOnMenu(""+index+"_up", ""+index+"_dn", ""+index+"_na" , "", 0, 0, true);
-	}
+	
 	
 	private Button addBtnOnMenu(String sUp, String sDn ) {
 		return addBtnOnMenu(sUp, sDn, "" , "", 0, 0, true );
@@ -873,6 +871,12 @@ public class Menu2d implements Screen {
 			
 		}
 		
+		
+	}
+
+	public void nextStickerLevel() {
+		Screen screen = new StickerScene(game);		
+		game.setScreen(screen);	
 		
 	}
 }

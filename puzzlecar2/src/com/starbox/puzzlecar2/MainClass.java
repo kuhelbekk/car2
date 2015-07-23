@@ -133,4 +133,9 @@ public class MainClass extends Game {
 		
 	}
 
+	public void nextStikerLevel() {
+		menu2d.nextStickerLevel();
+		
+	}
+
 }

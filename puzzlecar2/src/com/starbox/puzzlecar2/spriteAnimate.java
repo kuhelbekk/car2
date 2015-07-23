@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 
 import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -21,25 +22,34 @@ public class spriteAnimate extends Image {
 
 	private AnimationDrawable drawable;
 	private bgImgActivate imgActivate;
+	private bgImgActivate imgEnd;
 	boolean activate = false;
-	
+	boolean endImg = false;
 	private Sound snd;
+	private boolean HideParent;
 	
 
 	@Override
 	public void act(float delta) {
 		drawable.act(delta);		
-		super.act(delta);			
+		super.act(delta);
+		if (endImg){
+			if (drawable.isEndAnim())
+				if (!imgEnd.isVisible()){
+					setVisible(!HideParent);
+					imgEnd.setVisible(true);
+					imgEnd.resetAndPlay();	
+					Gdx.app.log("imgEnd","endImg");	
+				}
+		}
 		if (activate)			
 			if (drawable.isEndAnim())
 				if (isVisible()){
-					Gdx.app.log("act","1");	
 					setVisible(false);
 					imgActivate.setVisible(true);
 					imgActivate.resetAndPlay();	
 				}else{
-					if (imgActivate.endAnim()){
-						Gdx.app.log("act","2");
+					if (imgActivate.endAnim()){						
 						imgActivate.setVisible(false);
 						setVisible(true);
 						drawable.loop=true;						
@@ -50,10 +60,20 @@ public class spriteAnimate extends Image {
 	}
 
 	
+	public spriteAnimate(AnimationDrawable drawableStart,AnimationDrawable drawableEnd, AnimationDrawable drawableActivate, String sn, int waiting, Group group, int x, int y, int z, boolean loop, boolean playAfterWait) {		
+		this( drawableStart, drawableEnd,  drawableActivate,  sn,  waiting,  group,  x,  y,  z,  loop,  playAfterWait, x, y, true) ;		
+	}
 	
 	
-	public spriteAnimate(AnimationDrawable drawableStart, AnimationDrawable drawableActivate , String sn, int waiting, Stage stage, int x, int y, int z, boolean loop, boolean playAfterWait) {		
+	
+	
+	
+	
+	
+	public spriteAnimate(AnimationDrawable drawableStart,AnimationDrawable drawableEnd, AnimationDrawable drawableActivate, String sn, int waiting, Group group,
+							int x, int y, int z, boolean loop, boolean playAfterWait,int xEndAnim, int yEndAnim, boolean hideParent) {		
 		super(drawableStart);
+		this.HideParent = hideParent;
 		//snd = s;		
 		this.drawable = drawableStart;		
 		drawable.loop=loop;
@@ -67,11 +87,24 @@ public class spriteAnimate extends Image {
 		//drawable.play();		
 		setPosition(x, y);
 		setZIndex(z);
+		group.addActor(this);
+		if (drawableEnd!=null){
+			imgEnd = new bgImgActivate(drawableEnd);
+			imgEnd.setPosition(xEndAnim, yEndAnim);
+			imgEnd.setZIndex(z+1);
+			group.addActor(imgEnd);
+			imgEnd.setVisible(false);
+			endImg=true;
+			drawable.loop=false;
+			drawableEnd.loop=true;
+			
+		}
+		
 		if (drawableActivate!=null){
 			imgActivate = new bgImgActivate(drawableActivate);
 			imgActivate.setPosition(x, y);
 			imgActivate.setZIndex(z+1);
-			stage.addActor(imgActivate);
+			group.addActor(imgActivate);
 			imgActivate.setVisible(false);			
 			addListener(new ClickListener() {
 				public boolean touchDown(InputEvent event, float x, float y,

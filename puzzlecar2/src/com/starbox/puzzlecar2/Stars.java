@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Interpolation.ExpOut;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 public class Stars{
 	ArrayList<Image> starImages ;
 
-	public Stars(Stage stage,TextureAtlas atlas, boolean finishStar) {		
+	public Stars(Group group,TextureAtlas atlas, boolean finishStar) {		
 		starImages= new ArrayList<Image>();		
 		for (int i=0; i<50; i++){	
 			Image im ;
@@ -27,7 +28,7 @@ public class Stars{
 			im.setVisible(false);			
 			im.setOrigin(im.getWidth()/2, im.getHeight()/2);
 			starImages.add(im);
-			stage.addActor(im);
+			group.addActor(im);
 		}
 	}
 	
@@ -51,17 +52,14 @@ public class Stars{
 	public void playFinishStar(float x, float y){	
 		for ( Image im:starImages){			
 			im.setPosition(x-im.getWidth(), y-im.getHeight());
-			im.setColor(1,1,1,0);
+			im.setColor(1,1,1,1);
 			float f =(float) (Math.random()*2+6);
-			im.addAction(Actions.sequence(
-					Actions.alpha(0,3),
-					Actions.alpha(1,0f),
-					Actions.parallel(
+			im.addAction(Actions.parallel(
 						Actions.alpha(0, f,Interpolation.exp10In),
 						Actions.moveBy((float)(Math.random()*600)-300, (float)(Math.random()*600)-300, f,new ExpOut(2, 25)),//Interpolation.bounceOut),
 						Actions.rotateBy((float)(Math.random()*1200)-600,f,Interpolation.pow2Out)
 						
-					)));
+					));
 			im.setVisible(true);
 		}
 	}

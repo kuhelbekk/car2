@@ -1,36 +1,51 @@
 package com.starbox.puzzlecar2;
 
 import java.io.IOException;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.Animation.PlayMode;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Action;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.XmlReader;
 
 public  class Background {
 
 	protected Image shelf; //полка
 	protected TextureAtlas textureAtlasBG;
-	
-	Stage stage;
+	protected ArrayList<Image> trafficLightsList;
+	protected HashMap<Image,Integer> trafficLightsMap;
+	private byte trafficLightsDX=1;
+	protected Image actveTrafficLights;
+	protected long  timerTrafficLights;
+	int screenWidth;
+	int screenHeight;
+	//Stage stage;
+	Group backGroup;
+	Group frontGroup;
 	MainClass game;
 	XmlReader.Element frontE,backE ; 
 	int dx, dy =0;
 	
 	
 	
-	public Background(Stage stage, MainClass game, String xmlname, int screenWidth,int screenHeight, boolean stikerScene ) {	
-		this.stage=stage;
+	public Background(Group group, MainClass game, String xmlname, int screenWidth,int screenHeight, boolean stikerScene ) {	
+		//this.stage=stage;
+		this.backGroup = group;
 		this.game =game;
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
+		trafficLightsList=null;
+		trafficLightsMap = null;
+		actveTrafficLights=null;
 		try {		    
 			XmlReader xmlReader = new XmlReader();			
 		    XmlReader.Element root = xmlReader.parse(Gdx.files.internal(xmlname)); 
@@ -41,14 +56,14 @@ public  class Background {
 		   	backE = root.getChildByName("back");
 		   	
 		   	Image bg = new Image(textureAtlasBG.findRegion("bg"));
-			stage.addActor(bg);				
+		   	backGroup.addActor(bg);				
 			dx =(int) (screenWidth-game.maxWidht)/ 2;		
 			dy =(int) (screenHeight -game.maxHeight)/2;	
 			bg.setPosition(dx,dy);	
 			
 			int fz = drawBack( bg.getZIndex());			
 			shelf = new Image(game.commonAtlas.findRegion("polka"));
-			stage.addActor(shelf);
+			backGroup.addActor(shelf);
 			if (stikerScene){
 				shelf.setPosition(15,31+dy);
 				
@@ -84,24 +99,29 @@ public  class Background {
 		if (pHeight==0) pHeight = img.getHeight();
 		img.setSize(pWidth, pHeight);
 		img.setZIndex(zind);							
-		stage.addActor(img);
+		backGroup.addActor(img);
 		
 		
 	}
 
+	public Rectangle getStikerField(){
+		Rectangle rec = new Rectangle (280f, 62f, screenWidth-(37+25)-280f, screenHeight-(62f)*2);
+		return  rec;
+	}
 
 	public int drawBack(int zind){	
 		 Gdx.app.log("anim","drawBack");
-		 return  drawElements(backE, zind);		
+		 return  drawElements(backE, zind,backGroup);		
 	}
 	
 	
-	public void drawFront(int zind) {	
+	public void drawFront(int zind,Group group) {	
+		 this.frontGroup =group; 
 		 Gdx.app.log("anim","drawFront");
-		 drawElements(frontE, zind);	
+		 drawElements(frontE, zind, frontGroup);	
 	}
 	
-	private int drawElements(XmlReader.Element Elem, int zind){
+	private int drawElements(XmlReader.Element Elem, int zind, Group group){
 		
 		 XmlReader.Element img;
 		 Image image;
@@ -128,7 +148,7 @@ public  class Background {
 	    		image = new Image( textureAtlasBG.findRegion(nameImg));				
 				image.setPosition(dx+x, 800-image.getHeight()-y +dy);
 				image.setZIndex(z);
-				stage.addActor(image);	
+				group.addActorAt(z,image);	
 	    		break;
 			case 1: //Sprite
 				AnimationDrawable drawableActivate = null;
@@ -142,8 +162,8 @@ public  class Background {
 		    	TextureRegion[] Frames = game.GetAnimFrames(textureAtlasBG.findRegion(nameImg),w, h, animFarame); // создание массива кадров для анимации
 				Animation animate = new Animation(speedAnim*0.01f, Frames); // задание скорости	 анимации				
 				AnimationDrawable drawable = new AnimationDrawable(animate); // создание отрисовщика
-				spriteAnimate aImg = new spriteAnimate(drawable, drawableActivate, soundName ,waiting,stage, dx+x, 800-h-y +dy,z, true, false); // / компонент пузыря
-				stage.addActor(aImg);	    			
+				spriteAnimate aImg = new spriteAnimate(drawable,null, drawableActivate, soundName ,waiting,group, dx+x, 800-h-y +dy,z, true, false); // / компонент пузыря
+				group.addActor(aImg);	    			
 		    						
 				break;
 			case 2: //rotate				
@@ -152,7 +172,20 @@ public  class Background {
 				image.setZIndex(z);
 				image.setOrigin(image.getWidth()/2, image.getHeight()/2);
 				image.addAction(Actions.forever(Actions.rotateBy(90, speedAnim)));
-				stage.addActor(image);
+				group.addActor(image);
+				break;
+			case 8 : // светофор
+				if(trafficLightsMap==null) trafficLightsMap = new HashMap<Image,Integer>();
+				if(trafficLightsList==null) trafficLightsList = new ArrayList<Image>();
+				
+				image = new Image( textureAtlasBG.findRegion(nameImg));				
+				image.setPosition(dx+x, 800-image.getHeight()-y +dy);
+				image.setZIndex(z);				
+				group.addActor(image);
+				trafficLightsMap.put(image,waiting);
+				trafficLightsList.add(image);
+				actveTrafficLights = image;
+				timerTrafficLights= TimeUtils.millis()+waiting;
 				break;
 			
 			} 
@@ -160,7 +193,32 @@ public  class Background {
 	    	   	
 	    	    	
 	    } 		
+		 if (actveTrafficLights!=null){
+			 actveTrafficLights.setVisible(false);	
+		 } 
 		 return res+zind;
+	}
+
+
+	public void render(float delta) {
+		if (actveTrafficLights!=null){			
+			if (timerTrafficLights<TimeUtils.millis()){
+				actveTrafficLights.setVisible(true);
+				int ind = trafficLightsList.indexOf(actveTrafficLights);
+				
+				Gdx.app.log("bg","ind1 = "+ind);
+				if (((ind+trafficLightsDX)==trafficLightsList.size())||((ind+trafficLightsDX)==-1)){
+					trafficLightsDX*=-1;
+				}
+				ind+=trafficLightsDX;
+				Gdx.app.log("bg","ind2 = "+ind);
+				actveTrafficLights=trafficLightsList.get(ind);
+				Gdx.app.log("bg","timerTrafficLights = "+trafficLightsMap.get(actveTrafficLights));
+				timerTrafficLights= TimeUtils.millis()+trafficLightsMap.get(actveTrafficLights);
+				actveTrafficLights.setVisible(false);
+			}
+		}
+		
 	}
 
 }

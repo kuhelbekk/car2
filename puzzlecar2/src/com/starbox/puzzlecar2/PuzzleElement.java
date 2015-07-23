@@ -60,7 +60,7 @@ public class PuzzleElement {
 	public PuzzleElement(PuzzleScene parent, TextureRegion startRegion,
 			TextureRegion endRegion, int i, int endX, int endY,int endZ, String sName) {
 
-		if (parent.game.settings.isVoice()) {
+		if (parent.game.settings.isVoice()) {			
 			setSound(sName + parent.game.getLangStr()+".mp3");	
 		} else {
 			sSuccessName = "success.mp3";
@@ -78,7 +78,7 @@ public class PuzzleElement {
 		endPoint = new Vector2(endX , endY - startRegion.getRegionHeight());
 		Zindex = endZ;
 		
-		parent.stage.addActor(image);
+		parent.puzzleGroup.addActor(image);
 		setPosToStartPoint(2);
 		
 		image.addListener(new ClickListener() {
@@ -89,17 +89,12 @@ public class PuzzleElement {
 				// Gdx.app.log("touchDown","index=" +index+"  y=" +y );
 				if (isAttach)
 					return false;
-				image.setZIndex(60);
-
-				image.setScale(image.getHeight()
-						/ startRegion.getRegionHeight());
-				image.setPosition(
-						image.getX()
-								- (startRegion.getRegionWidth() - image
-										.getWidth()) / 2,
-						image.getY()
-								- (startRegion.getRegionHeight() - image
-										.getHeight()) / 2);
+				
+				if (parent.puzzleGroup.removeActor(image))	parent.onTopGroup.addActor(image);
+				image.setZIndex(2);
+				image.setScale(image.getHeight()/ startRegion.getRegionHeight());
+				image.setPosition(image.getX()- (startRegion.getRegionWidth() - image.getWidth()) / 2,
+						          image.getY()- (startRegion.getRegionHeight() - image.getHeight()) / 2);
 				image.setSize(startRegion.getRegionWidth(),
 						startRegion.getRegionHeight());
 				image.setOrigin(image.getWidth() / 2, image.getHeight() / 2);
@@ -129,7 +124,7 @@ public class PuzzleElement {
 				// image.setPosition(event.getStageX()-(image.getWidth()/2),
 				// event.getStageY()-(image.getHeight()/2)) ;
 				if (hit() != null) {
-					image.setColor(1.1f, 1.1f, 1.1f, 1);
+					image.setColor(3.1f, 1.1f, 1.1f, 1);
 					setAction(3);
 				} else {
 					image.setColor(0.9f, 0.9f, 0.9f, 1f);
@@ -169,10 +164,12 @@ public class PuzzleElement {
 	}
 
 	public void setSound(String name) {
+	//	Gdx.app.log("Sound = ", name);
 		sSuccessName = name;
 	}
 
 	private PuzzleElement hit() {		
+		
 		if(image != null) {
 			if ((Math.abs(endPoint.x - image.getX()) < parent.game.accuracy)
 					& (Math.abs(endPoint.y - image.getY()) < parent.game.accuracy)) {
@@ -180,13 +177,11 @@ public class PuzzleElement {
 			} else {			
 				return parent.sameElements.hitSameElement(this,image.getX(),image.getY(),parent.game.accuracy);			
 			}
-		}
+		}		
 		return null;
 	}
 
-	public void fixing(boolean PlaySound, float  px, float  py) {
-		
-		
+	public void fixing(boolean PlaySound, float  px, float  py) {		
 		image.remove();
 		image = null;
 		image = new Image(endRegion);		
@@ -201,10 +196,10 @@ public class PuzzleElement {
 								Actions.moveTo(endPoint.x, endPoint.y, 0.05f),
 		 					    Actions.scaleTo(1, 1, 0.05f))));
 		
-		parent.stage.addActor(image);
+		parent.puzzleGroup.addActor(image);
 
 		isAttach = true;
-		parent.btnBack.setZIndex(151);
+		//parent.btnBack.setZIndex(10);
 		if ((PlaySound)&(sSuccess != null)) {
 			sSuccess.play(1f);
 		}
@@ -216,7 +211,7 @@ public class PuzzleElement {
 	}
 
 	public void setPosToStartPoint(int type) {
-		//image.setZIndex(50);
+		if (parent.onTopGroup.removeActor(image))	parent.puzzleGroup.addActor(image);
 		if (image.getWidth() > image.getHeight()) {
 			if (image.getWidth() > 200) {
 				image.setSize(200, image.getHeight() / (image.getWidth() / 200));
@@ -250,7 +245,16 @@ public class PuzzleElement {
 			break;
 		}
 		
-		image.setVisible((index < 5));
+		if (index<5){
+			if (!image.isVisible()) {
+				 image.setColor(1, 1, 1,0);			
+				 image.setVisible(true);
+				 image.addAction(Actions.alpha(1, 0.5f));
+			}
+		}else{
+			image.setVisible(false);
+		}
+		
 		
 	}
 

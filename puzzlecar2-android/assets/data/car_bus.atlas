@@ -6,13 +6,13 @@ repeat: none
 fanim
   rotate: false
   xy: 2, 171
-  size: 1232, 832
-  orig: 1232, 832
+  size: 924, 832
+  orig: 924, 832
   offset: 0, 0
   index: -1
 frame
   rotate: false
-  xy: 1236, 415
+  xy: 928, 415
   size: 764, 588
   orig: 764, 588
   offset: 0, 0
@@ -26,14 +26,14 @@ frame
   index: -1
 4
   rotate: false
-  xy: 1236, 197
+  xy: 928, 197
   size: 231, 216
   orig: 231, 216
   offset: 0, 0
   index: -1
 2
   rotate: false
-  xy: 1469, 170
+  xy: 1694, 760
   size: 148, 243
   orig: 148, 243
   offset: 0, 0
@@ -47,36 +47,36 @@ frame
   index: -1
 7
   rotate: false
-  xy: 1619, 260
+  xy: 1161, 260
   size: 147, 153
   orig: 147, 153
   offset: 0, 0
   index: -1
 8
   rotate: false
-  xy: 1619, 260
+  xy: 1161, 260
   size: 147, 153
   orig: 147, 153
   offset: 0, 0
   index: -1
-wheel
+5
   rotate: false
-  xy: 1768, 262
+  xy: 1694, 607
   size: 140, 151
   orig: 140, 151
   offset: 0, 0
   index: -1
-5
-  rotate: false
-  xy: 484, 28
-  size: 137, 141
-  orig: 137, 141
-  offset: 0, 0
-  index: -1
 6
   rotate: false
-  xy: 623, 28
-  size: 133, 141
-  orig: 133, 141
+  xy: 1844, 852
+  size: 140, 151
+  orig: 140, 151
+  offset: 0, 0
+  index: -1
+wheel
+  rotate: false
+  xy: 1310, 262
+  size: 140, 151
+  orig: 140, 151
   offset: 0, 0
   index: -1

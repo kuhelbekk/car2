@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Interpolation;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -39,7 +40,7 @@ public class Candy extends Image {
 
 	}
 
-	public Candy(AnimationDrawable drawable, Sound s, TextureAtlas commonAtlas, Stage stage) {
+	public Candy(AnimationDrawable drawable, Sound s, TextureAtlas commonAtlas, Group group) {
 		
 		super(drawable);
 	/*	setColor((float) (1 - Math.random() * 0.4),
@@ -58,7 +59,7 @@ public class Candy extends Image {
 			im.setScale(rnd);
 			im.setOrigin(im.getWidth()/2, im.getHeight()/2);
 			imagesConfetti.add(im);
-			stage.addActor(im);
+			group.addActor(im);
 		}
 		
 		

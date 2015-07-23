@@ -19,7 +19,7 @@ public class SameElements {
 		SameElement se = getElement(puzzleElement);
 		if (se!=null) 			
 			for(SameElement se2:elements)
-				if((se2.sameIndex==se.sameIndex)&&(se2.pe!=se.pe))  /// находим все элементы с таким же ключем										
+				if((se2.sameIndex==se.sameIndex)&&(se2.pe!=se.pe)&&(!se2.pe.isAttach))  /// находим все элементы с таким же ключем										
 						if (  (Math.abs(se2.pe.endPoint.x - x) < accuracy)&(Math.abs(se2.pe.endPoint.y - y) < accuracy)){							
 							return se2.pe;
 						}				
