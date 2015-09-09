@@ -50,7 +50,7 @@ project(":android") {
 
     dependencies {
         compile project(":core")
-        compile 'org.onepf:openiab:0.9.8.4'
+        compile 'org.onepf:openiab:0.9.8.6'
         compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"

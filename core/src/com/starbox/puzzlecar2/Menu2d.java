@@ -803,7 +803,7 @@ public class Menu2d implements Screen {
 		
 		btnPuzzle.setColor(1, 1, 1, 0f);
 		btnPuzzle.setScale(1.2f);
-		btnPuzzle.setPosition(screenWidth / 2 - 462 - 40, screenHeight - 620);
+		btnPuzzle.setPosition(screenWidth / 2 - 402 - 40, screenHeight - 620);
 		btnPuzzle.addAction(Actions.sequence(Actions.alpha(0, delay + 0.7f),
 				Actions.parallel(
 						Actions.alpha(1, 0.5f),
@@ -813,7 +813,7 @@ public class Menu2d implements Screen {
 		
 		btnStikers.setColor(1, 1, 1, 0f);
 		btnStikers.setScale(1.2f);
-		btnStikers.setPosition(screenWidth / 2 + 140, screenHeight - 620);
+		btnStikers.setPosition(screenWidth / 2 + 80, screenHeight - 620);
 		btnStikers.addAction(Actions.sequence(Actions.alpha(0, delay + 0.7f),
 				Actions.parallel(
 						Actions.alpha(1, 0.5f),
@@ -822,7 +822,7 @@ public class Menu2d implements Screen {
 				)));
 		btnYTlink.setColor(1, 1, 1, 0f);
 		btnYTlink.setScale(1.2f);
-		btnYTlink.setPosition(0, screenHeight - 100);
+		btnYTlink.setPosition(0, screenHeight - 115);
 		btnYTlink.addAction(Actions.sequence(Actions.alpha(0, delay + 0.7f),
 				Actions.parallel(
 						Actions.alpha(1, 0.5f),
@@ -862,8 +862,8 @@ public class Menu2d implements Screen {
 		rays.setVisible(false);
 		table11.setVisible(true);		
 		table11.addAction(Actions.parallel(
-				Actions.sequence(Actions.moveTo(table11.getX()-0.25f*table11.getWidth(),table11.getY()- 0.25f*table11.getHeight()),Actions.moveTo(table11.getX(), table11.getY(), 0.7f, Interpolation.pow3Out)),
-				Actions.sequence(Actions.sizeTo(1.5f*table11.getWidth(), 1.5f*table11.getHeight()),Actions.sizeTo(table11.getWidth(), table11.getHeight(), 0.7f, Interpolation.pow3Out)),
+				Actions.sequence(Actions.moveTo(table11.getX()-0.15f*table11.getWidth(),table11.getY()- 0.05f*table11.getHeight()),Actions.moveTo(table11.getX(), table11.getY(), 0.7f, Interpolation.pow3Out)),
+				Actions.sequence(Actions.sizeTo(1.3f*table11.getWidth(), 1.1f*table11.getHeight()),Actions.sizeTo(table11.getWidth(), table11.getHeight(), 0.7f, Interpolation.pow3Out)),
 				Actions.sequence(Actions.alpha(0f, 0),  Actions.alpha(1f, 0.5f))
 				));
 	}
