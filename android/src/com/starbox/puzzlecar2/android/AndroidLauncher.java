@@ -4,11 +4,15 @@ package com.starbox.puzzlecar2.android;
 import java.util.Arrays;
 import java.util.Locale;
 
+import android.content.ActivityNotFoundException;
 import android.os.Bundle;
 import android.util.Log;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+
+import com.google.android.youtube.player.YouTubeIntents;
+
 import android.net.Uri;
 import android.app.AlertDialog;
 import android.provider.Settings.Secure;
@@ -85,7 +89,7 @@ public class AndroidLauncher extends AndroidApplication  {
 		mc = new MainClass(androidOutput);
 		initialize(mc, cfg);
 		mc.ErrorinQueryInventory();
-		// mc.setPremium(true);
+		//mc.setPremium(true);
 		try{
 			OpenIabHelper.Options.Builder builder = new OpenIabHelper.Options.Builder()
 					.setVerifyMode(OpenIabHelper.Options.VERIFY_EVERYTHING)
@@ -115,6 +119,29 @@ public class AndroidLauncher extends AndroidApplication  {
 		}
 
 	}
+
+	public void youTubeClick(final String langStr){
+		try{
+			Intent intent;
+			Log.d(TAG, "langStr = "+langStr);
+			switch(langStr){
+				case "_ru":
+					intent = YouTubeIntents.createUserIntent(this, "kapukikanuki");
+					break;
+				default:
+					intent = YouTubeIntents.createUserIntent(this, "PloopChannel");
+			}
+
+			startActivity(intent);
+		//	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+		//	startActivity(intent);
+		}catch (ActivityNotFoundException ex){
+		//	Intent intent=new Intent(Intent.ACTION_VIEW,
+		//			Uri.parse("http://www.youtube.com/watch?v="+id));
+		//	startActivity(intent);
+		}
+	}
+
 
 
 	// User clicked the "Upgrade to Premium" button.

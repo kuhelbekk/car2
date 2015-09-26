@@ -2,8 +2,6 @@ package com.starbox.puzzlecar2;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 
 import com.badlogic.gdx.Gdx;
@@ -47,7 +45,6 @@ public class PuzzleScene implements Screen {
 	protected SpriteBatch batch;
 	protected TextureAtlas textureAtlas;
 	protected MainClass game;
-	protected PuzzleElement selectedElement;
 	protected ArrayList<PuzzleElement> elementList;	
 	protected ArrayList<Image> tempImageList;
 	protected ArrayList<PuzzleElement> tempElementList;
@@ -56,9 +53,9 @@ public class PuzzleScene implements Screen {
 	private Stage stage;
 	protected Music mFon;
 	protected Sound sCandy, sStartSound, sFinishSound;
-	protected ArrayList<Baloon> listBaloon;
-	protected ArrayList<Candy> listCandy;
-	protected Image finishRays;
+	protected ArrayList<Baloon> listBaloons;
+	protected int baloonSceneStage;
+	private long timeCreateNextBaloon;
 	protected Image puzzleFrame;
 	protected Background bg;	
 	XmlReader.Element finishAnimXML;
@@ -68,7 +65,8 @@ public class PuzzleScene implements Screen {
 	long timeToFonMusic=0;
 	long timeToFinSound = 0;
 	float fonSoundLevel = 1;
-	
+	private long BackClickDnTime;
+	private int BackClickCount;
 	
 	protected boolean finishAction;
 	protected Button nextLevelButton;
@@ -83,9 +81,6 @@ public class PuzzleScene implements Screen {
 					finishSceneGroup,
 					onTopGroup;
 
-	
-	
-	
 	public PuzzleScene(MainClass game, String xmlFile) {
 		super();
 		this.game = game;
@@ -93,14 +88,14 @@ public class PuzzleScene implements Screen {
 		this.btnBack.setZIndex(10);
 	}	
 	
-	
-	
-	
 	public void createScene(String xmlFileName) {
 		Gdx.app.log("Game", "createScene");
 		this.xmlFileName = xmlFileName;	
 		finishAction = false;
+		BackClickDnTime = 0;
+		BackClickCount = 0;
 		elementList = new ArrayList<PuzzleElement>();
+		baloonSceneStage = 0;
 		/// расчет смещения пазла и фона
 		realWidth = Gdx.graphics.getWidth();
 		realHeight = Gdx.graphics.getHeight();
@@ -131,11 +126,18 @@ public class PuzzleScene implements Screen {
 		viewport = new FitViewport(screenWidth, screenHeight);
 		stage = new Stage(viewport,batch) {
 			@Override
-			public boolean keyDown(int keyCode) {				
+			public boolean keyDown(int keyCode) {
 				if (keyCode == Keys.BACK) {
-					BackClick();
-				}				
+					BackClickDn(false);
+				}
 				return super.keyDown(keyCode);
+			}
+			@Override
+			public boolean keyUp(int keyCode) {
+				if (keyCode == Keys.BACK) {
+					BackClickUp(false);
+				}
+				return super.keyUp(keyCode);
 			}
 		};			
 		
@@ -286,8 +288,7 @@ public class PuzzleScene implements Screen {
 		
 		
 		if (game.settings.isSound()) {			
-			sCandy = Gdx.audio.newSound(Gdx.files.internal("mfx/candy.mp3"));			
-					
+			sCandy = Gdx.audio.newSound(Gdx.files.internal("mfx/candy.mp3"));
 		}
 
 		// /back
@@ -298,10 +299,16 @@ public class PuzzleScene implements Screen {
 		btnBack.setPosition(screenWidth-btnBack.getWidth(),screenHeight-btnBack.getHeight());
 		onTopGroup.addActor(btnBack);
 		btnBack.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				BackClick();
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				BackClickDn(true);
+				return true;
+			}
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				BackClickUp(true);
 			}
 		});
+
+
 		
 		/// анимация старта
 		stage.addAction(Actions.parallel(
@@ -326,8 +333,8 @@ public class PuzzleScene implements Screen {
 		}else{
 			timeToFonMusic = TimeUtils.millis()-1000;	
 		}
-		
-		//showCandy();
+
+		//showBaloons();
 		
 		if (game.settings.isVoice()) {
 			fonSoundLevel=0.6f;
@@ -360,7 +367,7 @@ public class PuzzleScene implements Screen {
 		}
 		if (timeToFinSound>10000)
 			if ((timeToFinSound)<TimeUtils.millis()) {
-				if (sFinishSound != null) {
+				if ((sFinishSound != null)&&(game.settings.isSound())) {
 					sFinishSound.play(1f);
 				}
 				timeToFinSound=0;
@@ -374,26 +381,52 @@ public class PuzzleScene implements Screen {
 
 		if (finishAction) {//  собрали пазл
 			drawFinishAction();
-		}	      
-	      
-		if (listCandy != null) {
-			if (!listCandy.isEmpty()) { // убийство лопнутых и улетевших пузырей
-				Iterator<Candy> iterator = listCandy.iterator();
-				while (iterator.hasNext()) {
-					Candy b = (Candy) iterator.next();
-					if (b.isFinished()) {
-						b.remove();
-						iterator.remove();
-					}else{
-						// box2d	
-						b.render(PIXELS_TO_METERS);	
+		}
+
+
+
+
+		//Gdx.app.log("baloonSceneStage", "baloonSceneStage -"+baloonSceneStage);
+		switch(baloonSceneStage){
+			case 1:/// СОЗДАНИЕ  ШАРОВ
+				if (listBaloons.size()<20){
+					if (timeCreateNextBaloon<TimeUtils.millis()) {
+						timeCreateNextBaloon = TimeUtils.millis() + 450 + (int) (Math.random() * 200);
+						listBaloons.add(new Baloon(sCandy, game.commonAtlas, finishSceneGroup, screenWidth));
 					}
+				} else {
+					baloonSceneStage = 2;
 				}
-			}				
-		}		
-	      
+
+				break;
+			case 2:  /// удаление шаров
+				if (!listBaloons.isEmpty()) { // убийство лопнутых и улетевших пузырей
+					Iterator<Baloon> iterator = listBaloons.iterator();
+					while (iterator.hasNext()) {
+						Baloon b = (Baloon) iterator.next();
+						if (b.isFinished()) {
+							b.remove();
+							iterator.remove();
+						}
+					}
+				}else{
+					baloonSceneStage = 3;
+				}
+				break;
+		}
+
 		stage.act(delta);
 		stage.draw();
+
+		if ((BackClickDnTime >10)&(BackClickDnTime < TimeUtils.millis())){
+			if(btnBack.isPressed()) {
+				game.setScreen(game.menu2d);
+				dispose();
+			}else{
+				BackClickDnTime=0;
+			}
+		}
+
 	}
 
 	@Override
@@ -498,53 +531,10 @@ public class PuzzleScene implements Screen {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	protected void showCandy() {
-		listCandy = new ArrayList<Candy>();				
-		for (int c = 0; c < 32; c++) { // количество конфет
-			TextureRegion[] CandyFrames = game.GetAnimFrames(game.commonAtlas.findRegion("candy"+(int)(Math.random()*4)) , 188, 134); // создание массива кадров для анимации
-			Animation anim = new Animation(0.04f, CandyFrames); // задание скорости	 анимации
-			AnimationDrawable drawable = new AnimationDrawable(anim); // создание отрисовщика
-			Candy b = new Candy(drawable, sCandy , game.commonAtlas,finishSceneGroup); // / компонент пузыря
-			listCandy.add(b); 
-			
-			float x = (float)Math.random() * (screenWidth );
-			if (x>(screenWidth/2) )
-				x+=screenWidth/4;
-				else x-=screenWidth/4;
-				 
-			b.setPosition(x,(float)(-Math.random()*400-100	)); // начальная позиция			
-			//b.setZIndex(300);
-			//b.setScale(0.3f + (float) (Math.random() / 2));
-			finishSceneGroup.addActor(b);
-			b.addListener(new ClickListener() { // попадание по пузырю
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					//((Candy) (event.getListenerActor())).body.applyLinearImpulse(0f, 0.5f, ((Candy) (event.getListenerActor())).body.getPosition().x,  
-					//																	   ((Candy) (event.getListenerActor())).body.getPosition().y,true);
-					((Candy) (event.getListenerActor())).clickCandy();
-					return true;
-				}
-			});		
+	protected void showBaloons() {
+		listBaloons = new ArrayList<Baloon>();
+		baloonSceneStage=1;
 
-			
-			/// box2d			
-			BodyDef bodyDef = new BodyDef();
-		    bodyDef.type = BodyDef.BodyType.DynamicBody;		     
-		    bodyDef.position.set((b.getX() + 188/2) /PIXELS_TO_METERS,
-		    					(b.getY() + 134/2) / PIXELS_TO_METERS);		    
-		    b.body = world.createBody(bodyDef);
-		    PolygonShape shape = new PolygonShape();
-		    shape.setAsBox((9) / PIXELS_TO_METERS, (7) / PIXELS_TO_METERS);
-		    FixtureDef fixtureDef = new FixtureDef();
-	        fixtureDef.shape = shape;	        
-	        fixtureDef.density = 0.1f;
-	        b.body.createFixture(fixtureDef);
-	        shape.dispose();
-	        b.body.applyTorque(((float)Math.random()*0.2f)-0.1f, true);
-	        
-	        b.body.applyLinearImpulse( ((b.getX()-(screenWidth/2))*((float)Math.random())*(-0.01f))/PIXELS_TO_METERS ,(float)Math.random()*0.1f+0.25f, b.body.getPosition().x,  b.body.getPosition().y,true);
-	      //  b.body.applyForce(10, 10,b.body.getPosition().x, b.body.getPosition().y, true);
-	   
-		}
 		
 		 
 	}
@@ -555,9 +545,7 @@ public class PuzzleScene implements Screen {
 		return pfdx;
 	}
 
-	public int getPFDy() {
-		return pfdy;
-	}
+	public int getPFDy() { return pfdy; }
 	
 
 	private void showFinishScreen() {
@@ -588,8 +576,7 @@ public class PuzzleScene implements Screen {
 	    	String soundName = img.get("s","");	
 	    	int typeAnim = img.getInt("typeanim",0);	  	///0-NoAnim; 1-Sprite ; 2-rotate	    	
 	    	boolean loopAnim = img.getBoolean("loop",false);
-	    	
-	    	
+
 	    	switch (typeAnim) {
 	    	case 0:///NoAnim
 	    		image = new Image( textureAtlas.findRegion(nameImg));				
@@ -600,7 +587,7 @@ public class PuzzleScene implements Screen {
 			case 1: //Sprite
 				//AnimationDrawable drawableActivate = null;		   	
 		    	/// вставка элемента      	
-				Gdx.app.log("anim","drawElement-" + nameImg);
+				Gdx.app.log("anim","drawElement - " + nameImg);
 				AnimationDrawable drawableEnd = null;
 				XmlReader.Element  nextanim = img.getChildByName("nextanim"); 
 				
@@ -671,7 +658,24 @@ public class PuzzleScene implements Screen {
 	private void showFinishButton() {
 		Gdx.app.log("showFinishButton", "showFinishButton!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 		fStars = new Stars(finishSceneGroup, game.commonAtlas,true);
-		fStars.playFinishStar((screenWidth)/2,(screenHeight)/2);		
+		fStars.playFinishStar((screenWidth)/2,(screenHeight)/2);
+
+
+		/// лучи под кнопку
+		float rSize = 500;
+		Image	rays = new Image(game.commonAtlas.findRegion("rays"));
+		rays.setSize(0, 0);
+		rays.setPosition(screenWidth / 2 , screenHeight / 2 );
+		rays.setOrigin( rSize / 2,  rSize / 2);
+		finishSceneGroup.addActor(rays);
+		rays.addAction(Actions.parallel(
+				Actions.sizeTo(rSize,rSize,1),
+				Actions.moveTo(screenWidth / 2 - rSize / 2 , screenHeight / 2 - rSize / 2 ,1),
+				Actions.forever(Actions.rotateBy(12f, 1))
+		));
+
+
+
 		/// пошла кнопка
 		ButtonStyle bs = new ButtonStyle();
 		bs.up = game.commonSkin.getDrawable("btn_next_up");
@@ -684,8 +688,7 @@ public class PuzzleScene implements Screen {
 				dispose();
 				
 			}
-		});		
-		
+		});
 		nextLevelButton.setColor(1, 1, 1, 0.01f);	
 		float brSize = 186;
 		nextLevelButton.setSize(brSize*1.2f, brSize*1.2f); // *1.2
@@ -730,24 +733,40 @@ public class PuzzleScene implements Screen {
 			}
 			
 											
-		} else { // ///// показываем конфеты			
+		} else { // ///// показываем шары
 			if (nextLevelButton.getActions().size==0) {
-				if (listCandy==null) {					
-				//	showCandy();	
+				if (baloonSceneStage==0) {
+					showBaloons();
 				}
-			} else {				
-
 			}
+		}
+	}
+
+	public void BackClickDn(boolean isButtonInGame) {
+		Gdx.app.log("PScene", "BackClickDn");
+
+
+		if (isButtonInGame){
+			BackClickDnTime = TimeUtils.millis()+1000;
+			game.payFrame.showToast(game.getExitText());
+			BackClickCount=0;
+		}else{
+			if(BackClickCount == 0){
+				game.payFrame.showToast(game.getExitText());
+			}
+			if (BackClickCount>20){
+				game.setScreen(game.menu2d);
+				dispose();
+			}
+			BackClickCount++;
 
 		}
 	}
 
-	public void BackClick() {
-		Gdx.app.log("BtnClick", "exit PuzzleScene");
-		game.setScreen(game.menu2d);
-		dispose();
-		
-	
-	}	
-	
+	public void BackClickUp(boolean isButtonInGame) {
+		Gdx.app.log("PScene", "BackClickUp");
+		BackClickDnTime = 0 ;
+		BackClickCount = 0;
+
+	}
 }

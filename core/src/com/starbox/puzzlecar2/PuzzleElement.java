@@ -230,18 +230,18 @@ public class PuzzleElement {
 		
 		switch (type) {
 		case 0: // / сдвиг после попадания
-			image.addAction(Actions.moveTo(330+dx-image.getWidth()/2,parent.screenHeight - (index * 170) -image.getHeight()/2-dy , 0.2f));
+			image.addAction(Actions.moveTo(330+dx-image.getWidth()/2,  (index * 170)+dy-40 -image.getHeight()/2 , 0.2f));
 			break;
 		case 1:// // возврат на место детали
 			float scale = startRegion.getRegionHeight() / image.getHeight();
 			image.setPosition(image.getX() + (startRegion.getRegionWidth() - image.getWidth())/ 2,
 						      image.getY() + (startRegion.getRegionHeight() - image.getHeight()) / 2);
 			image.setScale(scale);
-			image.addAction(Actions.parallel(Actions.moveTo(330+dx-image.getWidth()/2, parent.screenHeight - (index* 170)-image.getHeight()/2-dy , 0.2f),	Actions.scaleTo(1, 1, 0.2f)));
+			image.addAction(Actions.parallel(Actions.moveTo(330+dx-image.getWidth()/2,(index* 170)+dy-40 -image.getHeight()/2 , 0.2f),	Actions.scaleTo(1, 1, 0.2f)));
 
 			break;
 		case 2:// / поставить на место без анимации
-			image.setPosition(330+dx-image.getWidth()/2,	parent.screenHeight -image.getHeight()/2- (index* 170)-dy );
+			image.setPosition(330+dx-image.getWidth()/2,	(index * 170)+dy -40 -image.getHeight()/2);
 			break;
 		}
 		
@@ -294,7 +294,6 @@ public class PuzzleElement {
 										Actions.rotateBy(0, 0.7f)
 										)));
 			break;
-
 		}
 	}
 

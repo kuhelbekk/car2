@@ -3,13 +3,6 @@ car_beton.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-fànim
-  rotate: false
-  xy: 2, 167
-  size: 1404, 774
-  orig: 1404, 774
-  offset: 0, 0
-  index: -1
 frame
   rotate: false
   xy: 1408, 381
@@ -22,6 +15,13 @@ fanim2
   xy: 2200, 386
   size: 480, 555
   orig: 480, 555
+  offset: 0, 0
+  index: -1
+fanim
+  rotate: false
+  xy: 2, 167
+  size: 1404, 774
+  orig: 1404, 774
   offset: 0, 0
   index: -1
 4

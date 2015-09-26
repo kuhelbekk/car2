@@ -11,7 +11,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class AnimationDrawable extends BaseDrawable {
 	public final Animation anim;
 	private float stateTime = 0;
-	public boolean playing = false;
+	private boolean playing = false;
 	public int animPos = 0;
 	private boolean endAnim = false;
 	public float rotate=0;
@@ -39,9 +39,7 @@ public class AnimationDrawable extends BaseDrawable {
 		}
 	}
 
-	public void reset() {
-		stateTime = 0;
-	}
+
 
 	@Override
 	public void draw(Batch batch, float x, float y, float width,float height) {
@@ -77,16 +75,6 @@ public class AnimationDrawable extends BaseDrawable {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	public void play() {		
 		if (!(playing || endAnim)) {
 			endAnim = false;
@@ -103,13 +91,26 @@ public class AnimationDrawable extends BaseDrawable {
 			stateTime = 0f;
 		}
 	}
-	
+
+	public void reset() {
+		stateTime = 0;
+	}
+
 	public void resetAndPlay() {			
 			endAnim = false;
 			playing = true;
 			stateTime = 0;		
 	}
-	
+
+	public void resetAndplayAfterWait() {
+
+			endAnim = false;
+			playing = true;
+			waitPlaying = true;
+			stateTime = 0f;
+
+	}
+
 	public void stop() {		
 		endAnim = true;
 		playing = false;

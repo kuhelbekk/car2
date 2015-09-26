@@ -115,15 +115,15 @@ public class MainClass extends Game {
 	public String getExitText() {
 		switch (settings.getLangID()) {
 		case 0:
-			return "To exit, press twice.";
+			return "Hold for exit.";
 		case 1:
-			return "Для выхода, нажмите дважды";
+			return "Удерживайте для выхода.";
 		case 2:
-			return "Pour quitter, appuyez deux fois.";
+			return "Maintenez la position pendant de presse.";
 		case 3:
 			return "Zum Beenden drücken Sie zweimal.";	
 		default:
-			return "To exit, press twice.";
+			return "Hold for exit.";
 		} 
 	}
 

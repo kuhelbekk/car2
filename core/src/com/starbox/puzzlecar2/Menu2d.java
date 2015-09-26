@@ -57,13 +57,15 @@ public class Menu2d implements Screen {
 	protected Button  btnSpeech,btnMusic,btnLangRu,btnLangEn,btnLangFr,btnLangDe,btnLang;
 	protected Button  btnYTlink;
 	protected Image arrow;
-	private long timeToExit;
+	private long BackClickDnTime;
+	private int BackClickCount;
+
 	private boolean closeLangTable = false;
 	protected Music mFon;
 	long timeToFonMusic=0;
 	
 	public ArrayList<Button> btnList;
-	public ArrayList<String> xmlNameLevelList;
+	public ArrayList<MenuLevelButton>  levelButtons;
 	private boolean startGame;
 
 	public Menu2d(MainClass game) {
@@ -75,7 +77,8 @@ public class Menu2d implements Screen {
 	public void createScene() {
 		
 		Gdx.app.log("Game", "createSceneMenu");
-		timeToExit = TimeUtils.millis()-1000;
+		BackClickDnTime = 0;
+		BackClickCount = 0;
 		textureAtlas = new TextureAtlas("data/menu.atlas");
 		realWidth = Gdx.graphics.getWidth();
 		realHeight = Gdx.graphics.getHeight();
@@ -124,23 +127,30 @@ public class Menu2d implements Screen {
 			@Override
 			public boolean keyDown(int keyCode) {				
 				if (keyCode == Keys.BACK) {
-					BackClick();
+					BackClickDn(false);
 				}				
 				return super.keyDown(keyCode);
+			}
+			@Override
+			public boolean keyUp(int keyCode) {
+				if (keyCode == Keys.BACK) {
+					BackClickUp(false);
+				}
+				return super.keyUp(keyCode);
 			}
 		};		
 		
 		
 		skin = new Skin(textureAtlas);
 		btnList = new ArrayList<Button>();
-		xmlNameLevelList = new ArrayList<String>() ;
+		levelButtons = new ArrayList<MenuLevelButton>() ;
 		Image bg = new Image(textureAtlas.findRegion("bg"));
 		bg.setPosition(dx, 0);
 		stage.addActor(bg);
 		Button btn;
 		// // menu level 1
 		
-		rays = new Image(textureAtlas.findRegion("rays"));
+		rays = new Image(game.commonAtlas.findRegion("rays"));
 		rays.setScale(1.6f);
 		rays.setPosition(screenWidth / 2 - rays.getWidth() / 2, screenHeight - 250 - rays.getHeight() / 2);
 		
@@ -166,7 +176,7 @@ public class Menu2d implements Screen {
 		btnStikers = addBtnOnMenu("btn_2_up", "btn_2_dn","","",screenWidth/2+40, screenHeight-620,true);
 		btnStikers.addListener(new ClickListener() {
 			public void clicked(InputEvent event, float x, float y) {
-				if (game.settings.isSound()) sButton.play();
+
 				blockButton = true;
 				Screen screen = new StickerScene(game);
 				if (event.getButton() > 0)
@@ -198,8 +208,10 @@ public class Menu2d implements Screen {
 							Gdx.app.log("menu xml", "get btn - " + ((i*cols)+j) );
 							btnE = btnsE.getChild((i*cols)+j);
 							Gdx.app.log("start", "screenWidth = " + screenWidth				+ " screenHeight = " + screenHeight);
-							btn = addLevelBtn(btnE.get("img_index"),btnE.get("xml_name"));	
-							if (btnE.getBoolean("premium")) PremiumButtons.add(btn);
+							boolean lock = btnE.getBoolean("premium");
+
+							btn = addLevelBtn(btnE.get("img_index"),btnE.get("xml_name"), lock);
+							if (lock) PremiumButtons.add(btn);
 							table11.add(btn).expand();
 							}
 													
@@ -386,25 +398,24 @@ public class Menu2d implements Screen {
 		btnList.add(btnBack);
 		stage.addActor(btnBack);
 		btnBack.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				BackClick();
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
+				BackClickDn(true);
+				return true;
+			}
+			public void touchUp (InputEvent event, float x, float y, int pointer, int button){
+				BackClickUp(true);
 			}
 		});
-		
-		
 		btnBack.setZIndex(115);
+
 		for (Button bn : btnList) {
 			bn.addListener(new ClickListener() {
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button) {
-					btnsTochDisable(Touchable.disabled,
-							(Button) event.getListenerActor());
+				public boolean touchDown(InputEvent event, float x, float y,int pointer, int button) {
+					btnsTochDisable(Touchable.disabled,	(Button) event.getListenerActor());
 					return true;
 				}
-				public void touchUp(InputEvent event, float x, float y,
-						int pointer, int button) {
-					btnsTochDisable(Touchable.enabled,
-							(Button) event.getListenerActor());
+				public void touchUp(InputEvent event, float x, float y,	int pointer, int button) {
+					btnsTochDisable(Touchable.enabled,	(Button) event.getListenerActor());
 				}
 			});
 		}
@@ -514,6 +525,11 @@ public class Menu2d implements Screen {
 			btnYTlink.remove();
 		}
 		btnYTlink = addBtnOnMenu("logo"+game.getLangStr(),"logo"+game.getLangStr(),"", "",10,  screenHeight - 115, true );
+		btnYTlink.addListener(new ClickListener() {
+			public void clicked(InputEvent event, float x, float y) {
+				game.payFrame.youTubeClick(game.getLangStr());
+			}
+		});
 	}
 	
 	
@@ -548,11 +564,19 @@ public class Menu2d implements Screen {
 				closeLangTable=false;
 			}		
 		
-		Gdx.gl.glClearColor(0.788f,0.65f,0.435f,1);
+		Gdx.gl.glClearColor(0.788f, 0.65f, 0.435f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act(delta);
 		stage.draw();
-		
+
+
+		if ((BackClickDnTime >10)&(BackClickDnTime < TimeUtils.millis())){
+			if(btnBack.isPressed()) {
+				Gdx.app.exit();
+			}else{
+				BackClickDnTime=0;
+			}
+		}
 
 	}
 
@@ -638,18 +662,17 @@ public class Menu2d implements Screen {
 		return btn;
 	}
 
-	private Button addLevelBtn(String index, String xmlname) {
+	private Button addLevelBtn(String index, String xmlname, boolean lock) {
 		
-		Gdx.app.log("addLevelBtn", "index - " +index+"  xmlname - "+ xmlname);
-		xmlNameLevelList.add(xmlname);
+		Gdx.app.log("addLevelBtn", "index - " + index + "  xmlname - " + xmlname);
 		ButtonStyle bs = new ButtonStyle();
 		bs.up = skin.getDrawable(index+"_up");
 		bs.down = skin.getDrawable(index+"_dn");
 		bs.disabled = skin.getDrawable(index+"_na");
-		
-		MenuLevelButton mBtn = new MenuLevelButton(bs,xmlname, this);
-		
-		Button btn = mBtn.getButton();	
+
+		MenuLevelButton mBtn = new MenuLevelButton(bs,xmlname, this, lock);
+		Button btn = mBtn.getButton();
+		levelButtons.add(mBtn);
 		btn.setPosition(0, 0);
 		btn.setVisible(true);
 		btnList.add(btn);
@@ -729,7 +752,7 @@ public class Menu2d implements Screen {
 	}
 
 	public void setPremium(boolean isPremium) {
-		Gdx.app.log("setPrenium", "isPremium="+isPremium);
+		Gdx.app.log("setPrenium", "isPremium=" + isPremium);
 		for (Button b : PremiumButtons) {
 			b.setDisabled(!isPremium);
 		}
@@ -737,30 +760,40 @@ public class Menu2d implements Screen {
 		
 		}
 
-	public void BackClick() {
-
-		Gdx.app.log("MainMenu", "Back Click");
-		if (game.settings.isSound())
-			sButton.play();
-
+	public void BackClickDn(boolean isButtonInGame) {
+		Gdx.app.log("MainMenu", "Back Click Dn");
 		if (tableSettings.isVisible()) {
-			Gdx.app.log("MainMenu", "Exit game");
-			if ((timeToExit+1000)>TimeUtils.millis()){
-				Gdx.app.exit();				
-			}else{
-				timeToExit = TimeUtils.millis();
+			if (isButtonInGame){
+				BackClickDnTime = TimeUtils.millis()+1000;
 				game.payFrame.showToast(game.getExitText());
+				if (game.settings.isSound())
+					sButton.play();
+				BackClickCount=0;
+			}else{
+				if(BackClickCount == 0){
+					if (game.settings.isSound())
+						sButton.play();
+					game.payFrame.showToast(game.getExitText());
+				}
+				if (BackClickCount>20) Gdx.app.exit();
+				BackClickCount++;
 			}
-			
 		} else {
+			if (game.settings.isSound())
+				sButton.play();
 			if (bgPay.isVisible()) {
 				hidePayFrame();
 			} else {
 				showFirstScreen(false);
-				
 			}
 		}
 	}
+
+	public void BackClickUp(boolean isButtonInGame) {
+		Gdx.app.log("MainMenu", "Back Click Up");
+			BackClickDnTime = 0;
+			BackClickCount = 0;
+		}
 
 	public void newGame(String xmlName, InputEvent event) {		
 		blockButton = true;
@@ -862,10 +895,10 @@ public class Menu2d implements Screen {
 		rays.setVisible(false);
 		table11.setVisible(true);		
 		table11.addAction(Actions.parallel(
-				Actions.sequence(Actions.moveTo(table11.getX()-0.15f*table11.getWidth(),table11.getY()- 0.05f*table11.getHeight()),Actions.moveTo(table11.getX(), table11.getY(), 0.7f, Interpolation.pow3Out)),
-				Actions.sequence(Actions.sizeTo(1.3f*table11.getWidth(), 1.1f*table11.getHeight()),Actions.sizeTo(table11.getWidth(), table11.getHeight(), 0.7f, Interpolation.pow3Out)),
-				Actions.sequence(Actions.alpha(0f, 0),  Actions.alpha(1f, 0.5f))
-				));
+				Actions.sequence(Actions.moveTo(table11.getX() - 0.15f * table11.getWidth(), table11.getY() - 0.05f * table11.getHeight()), Actions.moveTo(table11.getX(), table11.getY(), 0.7f, Interpolation.pow3Out)),
+				Actions.sequence(Actions.sizeTo(1.3f * table11.getWidth(), 1.1f * table11.getHeight()), Actions.sizeTo(table11.getWidth(), table11.getHeight(), 0.7f, Interpolation.pow3Out)),
+				Actions.sequence(Actions.alpha(0f, 0), Actions.alpha(1f, 0.5f))
+		));
 	}
 	
 	private void checkedLang(){
@@ -878,17 +911,19 @@ public class Menu2d implements Screen {
 
 	public void nextLevel(String xmlName) {
 		
-		for (String xmlN : xmlNameLevelList) {
-			if (xmlName.equals(xmlN)) {
-				Screen screen;
-			
-				if (xmlNameLevelList.indexOf(xmlN)<(xmlNameLevelList.size()-1)) {
-					 screen = new PuzzleScene(game,xmlNameLevelList.get(xmlNameLevelList.indexOf(xmlN)+1));
-					
-				}	else{
-					 screen = new PuzzleScene(game,xmlNameLevelList.get(0));
+		for (MenuLevelButton levelBtn : levelButtons) {
+			if (xmlName.equals(levelBtn.getXmlName())) {
+				MenuLevelButton btnNextLevel = levelButtons.get(0);
+				if (levelButtons.indexOf(levelBtn)<(levelButtons.size()-1)) {
+					btnNextLevel = levelButtons.get((levelButtons.indexOf(levelBtn))+1);
 				}
-				game.setScreen(screen);
+				if ((btnNextLevel.isLock())&&(!game.isPremium())){
+					game.setScreen(game.menu2d);
+					showPayFrame();
+				}else {
+					Screen screen = new PuzzleScene(game, btnNextLevel.getXmlName());
+					game.setScreen(screen);
+				}
 			}
 			
 		}

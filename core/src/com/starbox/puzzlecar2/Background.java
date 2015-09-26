@@ -6,14 +6,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.XmlReader;
 
@@ -26,6 +29,7 @@ public  class Background {
 	private byte trafficLightsDX=1;
 	protected Image actveTrafficLights;
 	protected long  timerTrafficLights;
+	protected Sound trafficLightsSnd;
 	int screenWidth;
 	int screenHeight;
 	//Stage stage;
@@ -65,16 +69,19 @@ public  class Background {
 			shelf = new Image(game.commonAtlas.findRegion("polka"));
 			backGroup.addActor(shelf);
 			if (stikerScene){
-				shelf.setPosition(15,31+dy);
-				
-				
-				
+				shelf.setPosition(15, 31 + dy);
 				createImgBar("center",280, 37+25, screenWidth-(37+25)-280, screenHeight-(37+25)*2,fz++);
 				createImgBar("bar_left",243,37+25, 0, screenHeight-(37+25)*2,fz++);
 				createImgBar("bar_right",screenWidth-(37+25), 37+25, 0, screenHeight-(37+25)*2,fz++);
-				createImgBar("bar_top",280, screenHeight-(37+25), screenWidth-280-(37+25) , 0 ,fz++);
-				createImgBar("bar_bottom",280, 25 ,   screenWidth-(37+25)-280 , 0   ,fz++);
-				
+
+				Image img;
+				img = createImgBar("bar_bottom",280, 25 ,   screenWidth-(37+25)-280 , 0   ,fz++);
+				Gdx.app.log("createImgBar1111111111","bar_bottom.img.getWidth"+img.getWidth());
+				img = createImgBar("bar_top", 280, screenHeight - (37 + 25), screenWidth - (37 + 25) - 280, 0, fz++);
+				Gdx.app.log("createImgBar1111111111", "bar_top.img.getWidth" + img.getWidth());
+
+
+
 				createImgBar("corner_lt",243, screenHeight-(25+37) ,  0 , 0   ,fz++);
 				createImgBar("corner_bl",243, 25 ,  0 , 0   ,fz++);
 				createImgBar("corner_rt",screenWidth-(37+25), screenHeight-(25+37) ,  0 , 0   ,fz++);
@@ -91,16 +98,16 @@ public  class Background {
 	}
 
 	
-	private void createImgBar(String imgName, float px, float py, float pWidth, float pHeight, int zind) {
+	private Image createImgBar(String imgName, float px, float py, float pWidth, float pHeight, int zind) {
 		Image img = new Image(game.commonAtlas.findRegion(imgName));
-		
+
 		img.setPosition(px,py);
 		if (pWidth==0) pWidth = img.getWidth();
 		if (pHeight==0) pHeight = img.getHeight();
 		img.setSize(pWidth, pHeight);
 		img.setZIndex(zind);							
 		backGroup.addActor(img);
-		
+		return img;
 		
 	}
 
@@ -179,19 +186,29 @@ public  class Background {
 				if(trafficLightsList==null) trafficLightsList = new ArrayList<Image>();
 				
 				image = new Image( textureAtlasBG.findRegion(nameImg));				
-				image.setPosition(dx+x, 800-image.getHeight()-y +dy);
+				image.setPosition(dx + x, 800 - image.getHeight() - y + dy);
 				image.setZIndex(z);				
 				group.addActor(image);
-				trafficLightsMap.put(image,waiting);
+				trafficLightsMap.put(image, waiting);
 				trafficLightsList.add(image);
 				actveTrafficLights = image;
+
+				if (!soundName.equals("")){
+					trafficLightsSnd =  Gdx.audio.newSound(Gdx.files.internal("mfx/"+soundName+".mp3"));
+				};
 				timerTrafficLights= TimeUtils.millis()+waiting;
+				image.addListener(new ClickListener() {
+					public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+						timerTrafficLights=TimeUtils.millis()-100;
+
+						if ((trafficLightsSnd!=null)&(game.settings.isSound())){
+							trafficLightsSnd.play(1f);
+						}
+						return true;
+					}
+				});
 				break;
-			
-			} 
-	    	
-	    	   	
-	    	    	
+			}
 	    } 		
 		 if (actveTrafficLights!=null){
 			 actveTrafficLights.setVisible(false);	
@@ -205,7 +222,6 @@ public  class Background {
 			if (timerTrafficLights<TimeUtils.millis()){
 				actveTrafficLights.setVisible(true);
 				int ind = trafficLightsList.indexOf(actveTrafficLights);
-				
 				Gdx.app.log("bg","ind1 = "+ind);
 				if (((ind+trafficLightsDX)==trafficLightsList.size())||((ind+trafficLightsDX)==-1)){
 					trafficLightsDX*=-1;

@@ -42,8 +42,8 @@ public class spriteAnimate extends Image {
 					Gdx.app.log("imgEnd","endImg");	
 				}
 		}
-		if (activate)			
-			if (drawable.isEndAnim())
+		if (activate){
+			if (drawable.isEndAnim()){
 				if (isVisible()){
 					setVisible(false);
 					imgActivate.setVisible(true);
@@ -53,10 +53,12 @@ public class spriteAnimate extends Image {
 						imgActivate.setVisible(false);
 						setVisible(true);
 						drawable.loop=true;						
-						drawable.resetAndPlay();	
+						drawable.resetAndplayAfterWait();
 						activate=false;
 					}
 				}
+			}
+		}
 	}
 
 	

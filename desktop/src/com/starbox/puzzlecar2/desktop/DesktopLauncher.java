@@ -30,7 +30,7 @@ public class DesktopLauncher implements PayCar2 {
 		frame = new JFrame("Test");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		JPanel panel= new JPanel();
-
+		final JCheckBox cb = new JCheckBox("premium",true);
 		JButton startButton = new JButton("Small");
 		panel.add(startButton, BorderLayout.WEST);
 		startButton.addActionListener(new ActionListener()
@@ -44,7 +44,7 @@ public class DesktopLauncher implements PayCar2 {
 				cfg.height =720;
 				MainClass mc=new MainClass(m);
 				new LwjglApplication(mc, cfg);
-				mc.setPremium(true);
+				mc.setPremium(cb.isSelected());
 			}
 		});
 		startButton = new JButton("medium");
@@ -59,7 +59,7 @@ public class DesktopLauncher implements PayCar2 {
 				cfg.height =800;
 				MainClass mc=new MainClass(m);
 				new LwjglApplication(mc, cfg);
-				mc.setPremium(true);
+				mc.setPremium(cb.isSelected());
 			}
 		});
 		startButton = new JButton("Big");
@@ -74,12 +74,12 @@ public class DesktopLauncher implements PayCar2 {
 				cfg.height =800;
 				MainClass mc=new MainClass(m);
 				new LwjglApplication(mc, cfg);
-				mc.setPremium(true);
+				mc.setPremium(cb.isSelected());
 			}
 		});
 		final JTextField edit1 = new JTextField("1280",4);
 		final JTextField edit2 = new JTextField("800",4);
-		final JCheckBox cb = new JCheckBox("premium",true);
+
 		panel.add(edit1, BorderLayout.CENTER);
 		panel.add(edit2, BorderLayout.CENTER);
 		panel.add(cb, BorderLayout.CENTER);
@@ -108,6 +108,11 @@ public class DesktopLauncher implements PayCar2 {
 	@Override
 	public void payClick() {
 		JOptionPane.showMessageDialog(frame, "Денег давай");
+	}
+
+	@Override
+	public void youTubeClick(final String langStr) {
+
 	}
 
 	@Override

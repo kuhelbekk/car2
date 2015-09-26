@@ -53,14 +53,18 @@ public class StickerScene implements Screen {
 	protected Stage stage;
 	protected Music mFon;
 	protected Sound sCandy;
-	protected ArrayList<Candy> listCandy;
+	protected ArrayList<Baloon> listBaloons;
+	protected int baloonSceneStage;
+	private long timeCreateNextBaloon;
 	protected ArrayList<Integer> useGroup;
 	
 	//protected Image finishRays;
 	protected Background bg;	
 	long timeToFonMusic=0;
 	float fonSoundLevel = 1;
-	
+	private long BackClickDnTime;
+	private int BackClickCount;
+
 	protected boolean finishAction;
 	protected Button nextLevelButton;
 	protected World world;	
@@ -97,8 +101,8 @@ public class StickerScene implements Screen {
 			
 			for (int i =0 ; i< stikerList.size(); i++){			
 				Rectangle element = new Rectangle(stikerList.get(i).endPoint.x , stikerList.get(i).endPoint.y ,stickerWidth,stickrHeight);	
-				Gdx.app.log("overlap", "newElement x = " + newElement.x+ "    y = "+	newElement.y );
-				Gdx.app.log("overlap", " element = " + element.x+ "    y = "+	element.y);
+			//	Gdx.app.log("overlap", "newElement x = " + newElement.x+ "    y = "+	newElement.y );
+			//	Gdx.app.log("overlap", " element = " + element.x+ "    y = "+	element.y);
 				if (newElement.overlaps(element)){
 					Gdx.app.log("overlap", " overlap = true");
 					overlap=  true;
@@ -119,6 +123,9 @@ public class StickerScene implements Screen {
 		finishAction = false;
 		int fz=0;
 		stikerList = new ArrayList<Sticker>();
+		BackClickDnTime = 0;
+		BackClickCount= 0 ;
+		baloonSceneStage = 0;
 		/// расчет смещения пазла и фона
 		realWidth = Gdx.graphics.getWidth();
 		realHeight = Gdx.graphics.getHeight();
@@ -149,11 +156,18 @@ public class StickerScene implements Screen {
 		viewport = new FitViewport(screenWidth, screenHeight);
 		stage = new Stage(viewport,batch) {
 			@Override
-			public boolean keyDown(int keyCode) {				
+			public boolean keyDown(int keyCode) {
 				if (keyCode == Keys.BACK) {
-					BackClick();
-				}				
+					BackClickDn(false);
+				}
 				return super.keyDown(keyCode);
+			}
+			@Override
+			public boolean keyUp(int keyCode) {
+				if (keyCode == Keys.BACK) {
+					BackClickUp(false);
+				}
+				return super.keyUp(keyCode);
 			}
 		};			
 		bgBackGroup = new Group();
@@ -264,10 +278,14 @@ public class StickerScene implements Screen {
 		bs.down = game.commonSkin.getDrawable("btn_back_dn");
 		btnBack = new Button(bs);
 		btnBack.setPosition(screenWidth-btnBack.getWidth(),screenHeight-btnBack.getHeight());		
-		onTopGroup.addActor(btnBack);			
+		onTopGroup.addActor(btnBack);
 		btnBack.addListener(new ClickListener() {
-			public void clicked(InputEvent event, float x, float y) {
-				BackClick();
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				BackClickDn(true);
+				return true;
+			}
+			public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+				BackClickUp(true);
 			}
 		});
 		
@@ -303,55 +321,73 @@ public class StickerScene implements Screen {
 	}
 
 	@Override
-	public void render(float delta) {		
+	public void render(float delta) {
 		/// запустить фоновую музыку после озвучки задания
 		bg.render(delta);
-		if ((timeToFonMusic>0) & (mFon!=null)){
-			if ((timeToFonMusic+2000)<TimeUtils.millis()) {				
-					mFon.setVolume(fonSoundLevel);
-					timeToFonMusic=0;				
-			}else{
+		if ((timeToFonMusic > 0) & (mFon != null)) {
+			if ((timeToFonMusic + 2000) < TimeUtils.millis()) {
+				mFon.setVolume(fonSoundLevel);
+				timeToFonMusic = 0;
+			} else {
 				//Gdx.app.log("Game", "setVolume = "+(((float)(TimeUtils.millis()-timeToFonMusic))/2000f));
-				 mFon.setVolume((((float)(TimeUtils.millis()-timeToFonMusic))/2000f)*fonSoundLevel);
+				mFon.setVolume((((float) (TimeUtils.millis() - timeToFonMusic)) / 2000f) * fonSoundLevel);
 			}
-		}		
-		
-		world.step(1f/60f, 0, 0);  		
-		Gdx.gl.glClearColor(1,1,1,1);
+		}
+
+		world.step(1f / 60f, 0, 0);
+		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
 
 		if (finishAction) {//  собрали пазл
 			drawFinishAction();
-		}	
-		
-		
-	      
-	      
-		if (listCandy != null) {
-			if (!listCandy.isEmpty()) { // убийство лопнутых и улетевших пузырей
-				Iterator<Candy> iterator = listCandy.iterator();
-				while (iterator.hasNext()) {
-					Candy b = (Candy) iterator.next();
-					if (b.isFinished()) {
-						b.remove();
-						iterator.remove();
-					}else{
-						// box2d	
-						b.render(PIXELS_TO_METERS);	
+		}
+
+
+		switch(baloonSceneStage){
+			case 1:/// СОЗДАНИЕ  ШАРОВ
+				if (listBaloons.size()<20){
+					if (timeCreateNextBaloon<TimeUtils.millis()) {
+						timeCreateNextBaloon = TimeUtils.millis() + 450 + (int) (Math.random() * 200);
+						listBaloons.add(new Baloon(sCandy, game.commonAtlas, finishSceneGroup, screenWidth));
 					}
+				} else {
+					baloonSceneStage = 2;
 				}
-			}				
-		}		
-	      
+
+				break;
+			case 2:  /// удаление шаров
+				if (!listBaloons.isEmpty()) { // убийство лопнутых и улетевших пузырей
+					Iterator<Baloon> iterator = listBaloons.iterator();
+					while (iterator.hasNext()) {
+						Baloon b = (Baloon) iterator.next();
+						if (b.isFinished()) {
+							b.remove();
+							iterator.remove();
+						}
+					}
+				}else{
+					baloonSceneStage = 3;
+				}
+				break;
+		}
+
 		stage.act(delta);
 		stage.draw();
-	}
 
+		if ((BackClickDnTime > 10) & (BackClickDnTime < TimeUtils.millis())) {
+			if (btnBack.isPressed()) {
+				game.setScreen(game.menu2d);
+				dispose();
+			} else {
+				BackClickDnTime = 0;
+			}
+
+		}
+	}
 	@Override
 	public void resize(int width, int height) {
 		// Gdx.app.log("Game", "resize Scene Car");
-		stage.getViewport().update(width, height,true);
+		stage.getViewport().update(width, height, true);
 	}
 
 	@Override
@@ -436,55 +472,9 @@ public class StickerScene implements Screen {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
-	protected void showCandy() {
-		listCandy = new ArrayList<Candy>();				
-		for (int c = 0; c < 32; c++) { // количество конфет
-			TextureRegion[] CandyFrames = game.GetAnimFrames(game.commonAtlas.findRegion("candy"+(int)(Math.random()*4)) , 188, 134); // создание массива кадров для анимации
-			Animation anim = new Animation(0.04f, CandyFrames); // задание скорости	 анимации
-			AnimationDrawable drawable = new AnimationDrawable(anim); // создание отрисовщика
-			Candy b = new Candy(drawable, sCandy , game.commonAtlas,finishSceneGroup); // / компонент пузыря
-			listCandy.add(b); // куча пузырей
-			
-			float x = (float)Math.random() * (screenWidth );
-			if (x>(screenWidth/2) )
-				x+=screenWidth/4;
-				else x-=screenWidth/4;
-				 
-			b.setPosition(x,(float)(-Math.random()*400-100	)); // начальная позиция			
-			b.setZIndex(300);
-			//b.setScale(0.3f + (float) (Math.random() / 2));
-			finishSceneGroup.addActor(b);
-			b.addListener(new ClickListener() { // попадание по пузырю
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					//((Candy) (event.getListenerActor())).body.applyLinearImpulse(0f, 0.5f, ((Candy) (event.getListenerActor())).body.getPosition().x,  
-					//																	   ((Candy) (event.getListenerActor())).body.getPosition().y,true);
-					((Candy) (event.getListenerActor())).clickCandy();
-					return true;
-				}
-			});		
-
-			
-			/// box2d			
-			BodyDef bodyDef = new BodyDef();
-		    bodyDef.type = BodyDef.BodyType.DynamicBody;		     
-		    bodyDef.position.set((b.getX() + 188/2) /PIXELS_TO_METERS,
-		    					(b.getY() + 134/2) / PIXELS_TO_METERS);		    
-		    b.body = world.createBody(bodyDef);
-		    PolygonShape shape = new PolygonShape();
-		    shape.setAsBox((9) / PIXELS_TO_METERS, (7) / PIXELS_TO_METERS);
-		    FixtureDef fixtureDef = new FixtureDef();
-	        fixtureDef.shape = shape;	        
-	        fixtureDef.density = 0.1f;
-	        b.body.createFixture(fixtureDef);
-	        shape.dispose();
-	        b.body.applyTorque(((float)Math.random()*0.2f)-0.1f, true);
-	        
-	        b.body.applyLinearImpulse( ((b.getX()-(screenWidth/2))*((float)Math.random())*(-0.01f))/PIXELS_TO_METERS ,(float)Math.random()*0.1f+0.25f, b.body.getPosition().x,  b.body.getPosition().y,true);
-	      //  b.body.applyForce(10, 10,b.body.getPosition().x, b.body.getPosition().y, true);
-	   
-		}
-		
-		 
+	protected void showBaloons() {
+		listBaloons = new ArrayList<Baloon>();
+		baloonSceneStage=1;
 	}
 
 
@@ -563,19 +553,42 @@ public class StickerScene implements Screen {
 			showFinishButton();											
 		} else { // ///// показываем конфеты			
 			if (nextLevelButton.getActions().size==0) {
-				if (listCandy==null) {					
-					showCandy();	
+				if (baloonSceneStage==0) {
+					showBaloons();
 				}
 			} 
 		}
 	}
 
-	public void BackClick() {
-		Gdx.app.log("BtnClick", "exit StikerScene");
-		game.setScreen(game.menu2d);
-		dispose();
-		
-		
-	}	
-	
+	public void BackClickDn(boolean isButtonInGame) {
+		Gdx.app.log("BtnClick", "BackClickDn");
+		if (isButtonInGame){
+			BackClickDnTime = TimeUtils.millis()+1000;
+			game.payFrame.showToast(game.getExitText());
+			BackClickCount=0;
+		}else{
+
+			if(BackClickCount == 0){
+				game.payFrame.showToast(game.getExitText());
+			}
+			if (BackClickCount>20){
+				game.setScreen(game.menu2d);
+				dispose();
+			}
+			BackClickCount++;
+
+		}
+
+
+
+	}
+	public void BackClickUp(boolean isButtonInGame) {
+		Gdx.app.log("BtnClick", "exit BackClickUp");
+		BackClickDnTime = 0 ;
+		BackClickCount = 0;
+	}
+
+
+
+
 }
